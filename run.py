@@ -7,13 +7,13 @@ SCOPE = [
     "https://www.googleapis.com/auth/drive.file",
     "https://www.googleapis.com/auth/drive"
     ]
-
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('wheel-of-fortune')
 
 GUESSED_LETTERS = []
+TURN = "1"
 VOWELS = ["a", "e", "i", "o", "u"]
 PLAYER1 = ""
 PLAYER2 = ""
@@ -29,30 +29,66 @@ data = title.get_all_values()
 
 def play_game():
     """
-    The function opens the game.
+    The Funtion starts the game and registers the 2 players names.
     """
     print("Hello and welcome to the Wheel ... of ...  Fortuuuuuune!")
     print("\n")
-    print("My Name is Mr Boty and I will be your host")
-    print("\n")    
-    print("The rules are simple:")
+    print("My Name is Mr Boty and I will be your host!")
+    print("\n")  
+    print("Lets introduce our 2 contestants. ")
+    print("\n")   
+    PLAYER1 = str(input("Contestant number 1. What is you name please? "))
+    print("Welcome and good luck " + str(PLAYER1))
     print("\n")
-    print("Turn the wheel to get a cash value and guess a consonent.")
+
+    PLAYER2 = str(input("Contestant number 2. How should we call you? "))
+    print("Thank you and good luck to you too " + str(PLAYER2))
     print("\n")
-    print("The cash value will be multiplied by the number of consonent")
-    print("found in the mystery sentence and will be added to your jackpot.")
+    print("And now that that we know our contestants!")
     print("\n")
-    print("After guessing a correct consonent, you will be able to either:")
-    print("a - buy a Vowel for 250$")
-    print("b - guess the mystery sentence")
+    print("Let's have a look at the rules!")
     print("\n")
-    print("You will pass your turn if:")
-    print("a - your consonent is not in the mystery sentence")   
-    print("b - you guess incorrecty the mystery sentence")
-    print("c - you fall on the 'Pass your turn' case in the wheel")
-    print("d - you fall on the 'Bankrupt' case in the wheel in which case")
-    print("you also lose all your earnings. OUCH!! THOUGH LUCK!")
-    print("\n")
+
+
+def rules():
+    """
+    The function shows the game rules and ask whether the players 
+    have understood them and are ready to proceed.
+    """
+    while True:       
+        print("The rules are simple:")
+        print("\n")
+        print("- Turn the wheel to get a cash value and guess a consonant.")
+        print("\n")
+        print("- The cash value will be multiplied by the number of consonant")
+        print("  in the mystery sentence and will be added to your jackpot.")
+        print("\n")
+        print("- After guessing a correct consonant, you can:")
+        print("  a - buy a Vowel for 250$")
+        print("  b - turn the wheel and find a new consonant")
+        print("  c - guess the mystery sentence")
+        print("\n")
+        print("- You will pass your turn if:")
+        print("  a - your consonant is not in the mystery sentence")   
+        print("  b - you guess incorrecty the mystery sentence")
+        print("  c - you fall on the 'Pass your turn' case in the wheel")
+        print("  d - you fall on the 'Bankrupt' case. You will")
+        print("  also lose all your earnings. OUCH!! THOUGH LUCK!")
+        print("\n")
+
+        user_input = ''
+
+        while True:
+            user_input = input('Have you understood? (type yes when ready)')
+
+            if user_input.lower() != 'yes':                
+                print("It's ok. Take your time. Read thoroughly.")
+                print("Enter yes when you are ready")  
+                break
+            
+            else:
+                print('Very well. IT IS NOW TIME TO PLAY!!')
+            return user_input.lower()
 
 
 def select_row():
@@ -60,10 +96,11 @@ def select_row():
     The function selects randomly a row in the google 
     worksheet called "title" and creates a quote 
     said by Mr Boty and the sentence to guess in the turn.
-    """
+    """    
     row = random.choice(list(data))
     sentence = row[0]
-    print(f"In the '{row[4]}' category.\n")
+    print("Dear contestants,")
+    print(f"in the '{row[4]}' category.\n")
     print(f"The guess contains {row[1]} words and {row[2]} letters.\n")
     print("Take it away!")
     print(sentence)
@@ -85,9 +122,10 @@ def convert_letter(sentence):
     print(guess)
 
 
-def main():
+def main():    
     play_game()
+    rules()    
     convert_letter(select_row())
-
+    
 
 main()
