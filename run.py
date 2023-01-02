@@ -22,7 +22,7 @@ MYSTERY_SENTENCE = ""
 HIDE_SENTENCE = ""
 PLAYER1 = ""
 PLAYER2 = ""
-round = "1"
+ROUND = "1"
 VOWELS = ["a", "e", "i", "o", "u"]
 CONSONANT = ["b", "c", "d", "f", "g", "h", "j", "k", "l",
              "m", "n", "p", "q", "r", "s", "t", "v", "w",
@@ -140,6 +140,7 @@ def convert_letter(MYSTERY_SENTENCE):
         if ord(MYSTERY_SENTENCE[i]) != 32:
             HIDE_SENTENCE = HIDE_SENTENCE.replace(MYSTERY_SENTENCE[i], '_')
     print(HIDE_SENTENCE)
+    turn_wheel()
 
 
 def turn_wheel():
@@ -214,9 +215,9 @@ def player_guess():
 
 
 def compare_print():
-    """ The function compares the users guess with the mystery 
+    """ The function compares the users guess with the mystery
     sentence and print the letters that are correct.
-    The function then gives a choice to the player who can either 
+    The function then gives a choice to the player who can either
     guess the sentence, buy a vowel or turn the wheel again"""
     global HIDE_SENTENCE, PLAYER1CASH
     hidden_list = list(HIDE_SENTENCE)
@@ -230,7 +231,7 @@ def compare_print():
 
     letter_count = MYSTERY_SENTENCE.count(GUESS)
     print("\n")
-    print(f"Congratulations {PLAYER1}")
+    print("Congratulations")
     if letter_count == 1:
         print(f"{GUESS.upper()} is found once in the mystery sentence")
     else:
@@ -240,7 +241,7 @@ def compare_print():
     earnings = int(letter_count)*CASH
     PLAYER1CASH = int(earnings) + int(PLAYER1CASH)
     print(f"You earned {earnings}$!!!")
-    print(f"{PLAYER1} your have now have {PLAYER1CASH}$ in the bank.")
+    print(f"{PLAYER1}, you have now have {PLAYER1CASH}$ in the bank.")
     print("\n")
     print(f"Dear {PLAYER1}")
     print("Now that you have found a correct consonant in ")
@@ -256,9 +257,40 @@ def compare_print():
     elif user_input == "b":
         turn_wheel()
     elif user_input == "c":
-        turn_wheel()
+        guess_sentence()
     else:
         print("wrong answer")
+
+
+def guess_sentence():
+    """
+    The function allows the player to guess directly
+    the sentence for a chance to win the round.
+    If the answer is wrong the second player can play.
+    if the answer is correct, the round changes with a new mystery sentence
+    """
+    print("\n")
+    print(f"Very well {PLAYER1}.")
+    print("Be sure to insert all your letters in lowercase")
+    print("For example -> i love jamaica")
+    print("Good Luck")
+    global ROUND
+    user_input = input("->")
+
+    if user_input == MYSTERY_SENTENCE:
+        print("\n")
+        print(f"CONGRATULATIONS {PLAYER1}!!!")
+        print(f"The answer was indeed {MYSTERY_SENTENCE}!!!")
+        print(f"It is now time to move onto {ROUND}!!!")
+        print("\n")
+        print("\n")
+        convert_letter(select_row())
+
+    else:
+        print("\n")
+        print(f"I am really sorry {PLAYER1}")
+        print("The answer is incorrect,")
+        print("you pass your turn")
 
 
 def main():
@@ -269,7 +301,6 @@ def main():
     rules()
     player_input()
     convert_letter(select_row())
-    turn_wheel()
 
 
 main()
