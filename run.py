@@ -17,14 +17,17 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('wheel-of-fortune')
 
 guessed_letters = []
+GUESS = ""
 MYSTERY_SENTENCE = ""
+HIDE_SENTENCE = ""
 PLAYER1 = ""
 PLAYER2 = ""
-ROUND = "1"
+round = "1"
 VOWELS = ["a", "e", "i", "o", "u"]
 CONSONANT = ["b", "c", "d", "f", "g", "h", "j", "k", "l",
              "m", "n", "p", "q", "r", "s", "t", "v", "w",
              "x", "y", "z"]
+CASH = 0
 PLAYER1CASH = 0
 PLAYER2CASH = 0
 WHEEL = ["Bankrupt", 600, 400, 300, "Pass your turn",
@@ -114,7 +117,7 @@ def select_row():
     """
     global MYSTERY_SENTENCE
     row = random.choice(list(data))
-    MYSTERY_SENTENCE = row[0]
+    MYSTERY_SENTENCE = row[0].lower()
     print("Dear contestants,")
     print(f"in the '{row[4]}' category.\n")
     print(f"The guess contains {row[1]} words and {row[2]} letters.\n")
@@ -131,80 +134,131 @@ def convert_letter(MYSTERY_SENTENCE):
     The function is inspired by Hayley Guillou on stack overflow
     https://stackoverflow.com/questions/32960141/how-can-i-replace-the-letters-of-a-string-with-underscores
     """
-    guess = MYSTERY_SENTENCE
+    global HIDE_SENTENCE
+    HIDE_SENTENCE = MYSTERY_SENTENCE
     for i in range(0, len(MYSTERY_SENTENCE)):
         if ord(MYSTERY_SENTENCE[i]) != 32:
-            guess = guess.replace(MYSTERY_SENTENCE[i], '_ ')
-    print(guess)
+            HIDE_SENTENCE = HIDE_SENTENCE.replace(MYSTERY_SENTENCE[i], '_')
+    print(HIDE_SENTENCE)
 
 
 def turn_wheel():
     """
     The function gets the cash value from the wheel list.
     """
+    global CASH, PLAYER1CASH
     print("\n")
     print(f'{PLAYER1}, are you ready to turn the wheel? (type yes when ready)')
 
     player_input()
 
-    cash_value = random.choice(WHEEL)
+    CASH = random.choice(WHEEL)
 
-    if cash_value == "Bankrupt":
+    if CASH == "Bankrupt":
         print("\n")
         print("OH GOSH! You fell on BANKRUPT.")
         print("You lose ALL your earnings and pass your turn")
         print("That is really unlucky")
+        PLAYER1CASH = 0
 
-    elif cash_value == "Pass your turn":
+    elif CASH == "Pass your turn":
         print("\n")
         print("Too bad, You fell on PASS YOUR TURN.")
         print("It is now your opponent turn.")
         print("Sorry")
 
     else:
-        print("Well none!")
-        print(f"Excellent you play for {cash_value}$")
-        return cash_value
+        print(f"Well done!{PLAYER1}!")
+        print(f"You play for {CASH}$")
+        player_guess()
 
 
 def player_guess():
     """
-    This function check if the player guess is a consonant or not, 
-    if the guess has been guessed before and if the user guessed 
+    This function check if the player guess is a consonant or not,
+    if the guess has been guessed before and if the user guessed
     a single letter.
     """
     print("\n")
     print(PLAYER1 + ". What will be your consonant?")
-    player_guess = ''
+    global GUESS
     while True:
-        player_guess = input("Type a consonant -> ")
+        GUESS = input("Type a consonant -> ")
 
-        if len(player_guess) != 1:
+        if len(GUESS) != 1:
             print(f"Sorry {PLAYER1} you have inserted more than one letter.")
             print("Please guess a single consonant")
             print("\n")
             continue
 
-        elif player_guess not in CONSONANT:
-            print(f"Sorry {player_guess.upper()} is not a consonant.")
+        elif GUESS not in CONSONANT:
+            print(f"Sorry {GUESS.upper()} is not a consonant.")
             print("Please enter a consonant")
             print("\n")
             continue
 
-        elif player_guess in guessed_letters:
-            print(f"Sorry, {player_guess.upper()} has already been guessed.")
+        elif GUESS in guessed_letters:
+            print(f"Sorry, {GUESS.upper()} has already been guessed.")
             print("Please enter another consonant")
             print("\n")
             continue
 
         else:
             print('Thank you ' + str(PLAYER1))
-            print(f"Let's see if the letter '{player_guess.upper()}' ")
+            print(f"Let's see if the letter '{GUESS.upper()}' ")
             print("is in the mystery sentence.")
             print("\n")
-            guessed_letters.append(player_guess)
-            print("this is guessed letters " + str(guessed_letters))                      
+            guessed_letters.append(GUESS)
+            compare_print()
             break
+
+
+def compare_print():
+    """ The function compares the users guess with the mystery 
+    sentence and print the letters that are correct.
+    The function then gives a choice to the player who can either 
+    guess the sentence, buy a vowel or turn the wheel again"""
+    global HIDE_SENTENCE, PLAYER1CASH
+    hidden_list = list(HIDE_SENTENCE)
+    indices = [
+        i for i, letter in enumerate(MYSTERY_SENTENCE) if letter == GUESS
+        ]
+    for index in indices:
+        hidden_list[index] = GUESS
+        HIDE_SENTENCE = "".join(hidden_list)
+    print(HIDE_SENTENCE)
+
+    letter_count = MYSTERY_SENTENCE.count(GUESS)
+    print("\n")
+    print(f"Congratulations {PLAYER1}")
+    if letter_count == 1:
+        print(f"{GUESS.upper()} is found once in the mystery sentence")
+    else:
+        print(f"{GUESS.upper()} is found {letter_count} times")
+        print("in the sentence!")
+
+    earnings = int(letter_count)*CASH
+    PLAYER1CASH = int(earnings) + int(PLAYER1CASH)
+    print(f"You earned {earnings}$!!!")
+    print(f"{PLAYER1} your have now have {PLAYER1CASH}$ in the bank.")
+    print("\n")
+    print(f"Dear {PLAYER1}")
+    print("Now that you have found a correct consonant in ")
+    print("the mystery sentence, you are allowed to either: ")
+    print("  a - buy a Vowel for 250$")
+    print("  b - turn the wheel and find a new consonant")
+    print("  c - guess the mystery sentence")
+    print("\n")
+    print(f"{PLAYER1}, what is your choice please? a, b or c?")
+    user_input = input("->")
+    if user_input == "a":
+        turn_wheel()
+    elif user_input == "b":
+        turn_wheel()
+    elif user_input == "c":
+        turn_wheel()
+    else:
+        print("wrong answer")
 
 
 def main():
@@ -216,7 +270,6 @@ def main():
     player_input()
     convert_letter(select_row())
     turn_wheel()
-    player_guess()
 
 
 main()
