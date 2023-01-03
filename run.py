@@ -17,20 +17,19 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('wheel-of-fortune')
 
+PLAYER = ["", ""]
+player_cash = [0, 0]
+round = 1
+turn = 0
 guessed_letters = []
 GUESS = ""
 MYSTERY_SENTENCE = ""
 HIDE_SENTENCE = ""
-PLAYER1 = ""
-PLAYER2 = ""
-ROUND = "1"
 VOWELS = ["a", "e", "i", "o", "u"]
 CONSONANT = ["b", "c", "d", "f", "g", "h", "j", "k", "l",
              "m", "n", "p", "q", "r", "s", "t", "v", "w",
              "x", "y", "z"]
-CASH = 0
-PLAYER1CASH = 0
-PLAYER2CASH = 0
+
 WHEEL = ["Bankrupt", 600, 400, 300, "Pass your turn",
          800, 350, 450, 700, 300, 600, "Bankrupt", 600, 500, 300, 500,
          800, 550, 400, 300, 900, 500, 300, 900]
@@ -40,6 +39,8 @@ data = title.get_all_values()
 
 
 def print(s):
+    """
+    Used to add a typing effect when printing on the terminal"""
     for letters in s + '\n':
         sys.stdout.write(letters)
         sys.stdout.flush()
@@ -50,24 +51,18 @@ def play_game():
     """
     The Funtion starts the game and registers the 2 players names.
     """
-    global PLAYER1, PLAYER2
+    global PLAYER
     print("Hello and welcome to the Wheel ... of ...  Fortuuuuuune!")
-    print("\n")
-    print("My Name is Mr Boty and I will be your host!")
-    print("\n")
-    print("Lets introduce our 2 contestants. ")
-    print("\n")
-    PLAYER1 = str(input("Contestant 1. What is your name please?"))
-    print("Welcome and good luck " + str(PLAYER1))
-    print("\n")
+    print("\nMy Name is Mr Boty and I will be your host!\n")
+    print("Lets introduce our 2 contestants.\n")
+    PLAYER[0] = (input("Contestant 1. What is your name please?"))
+    print(f"Welcome and good luck {PLAYER[0]} \n")
 
-    PLAYER2 = str(input("Contestant 2. How should we call you? "))
-    print("Thank you and good luck to you too " + str(PLAYER2))
-    print("\n")
-    print("And now that we know our 2 contestants,")
-    print("\n")
-    print("Let's have a look at the rules!")
-    print("\n")
+    PLAYER[1] = (input("Contestant 2. How should we call you? "))
+    print(f"Thank you and good luck to you too {PLAYER[1]} \n")
+    print("I hope you will have as much fun as I will\n")
+    print("But before we start the game\n")
+    print("Would you like to consult the rules?\n")
 
 
 def rules():
@@ -75,27 +70,46 @@ def rules():
     The function shows the game rules and ask whether the players
     have understood them and are ready to proceed.
     """
-    print("The rules are simple:")
-    print("\n")
-    print("- Turn the wheel to get a cash value and guess a consonant.")
-    print("\n")
-    print("- The cash value will be multiplied by the number of consonant")
-    print("  in the mystery sentence and will be added to your jackpot.")
-    print("\n")
-    print("- After guessing a correct consonant, you can:")
-    print("  a - buy a Vowel for 250$")
-    print("  b - turn the wheel and find a new consonant")
-    print("  c - guess the mystery sentence")
-    print("\n")
-    print("- You will pass your turn if:")
-    print("  a - your consonant is not in the mystery sentence")
-    print("  b - you guess incorrecty the mystery sentence")
-    print("  c - you fall on the 'Pass your turn' case in the wheel")
-    print("  d - you fall on the 'Bankrupt' case. You will")
-    print("  also lose all your earnings. OUCH!! THOUGH LUCK!")
-    print("\n")
-    print('Have you understood the rules? (type yes when ready)')
-
+    
+    while True:
+        user_input = input("yes or no? -> ")
+        if user_input == "no":
+            print("Excellent. I see that we have 2 experts today.")
+            print("It is going to be reaaaaaally fun!!\n")
+            print("Ladies and Gentlemen. Without further ado.\n")
+            break
+        
+        elif (user_input != "no" and user_input != "yes"):
+            print("Sorry, I did not understand your answer")
+            print("Insert yes or no please")
+            continue
+        
+        else:
+            print("The rules are simple:\n")
+            print("You have to discover a mystery sentence per round")
+            print("by guessing a consonant or a vowel each turn.\n")
+            print("For your firt guess you will need to:")
+            print("- Turn the wheel to get a cash value")
+            print("- And then guess a consonant.\n")
+            print("- The cash value will be multiplied by the")
+            print("  number of consonant found in the mystery")
+            print("  sentence and will be added to your bank.\n")
+            print("- After guessing a correct letter, you can:")
+            print("  a - buy a Vowel for 250$")
+            print("  b - turn the wheel and find a new consonant")
+            print("  c - guess the mystery sentence\n")
+            print("- You will pass your turn if:")
+            print("  a - your guess is not in the mystery sentence")
+            print("  b - you guess incorrecty the mystery sentence")
+            print("  c - you spin the wheel on'Pass your turn'")
+            print("  d - you spin the wheel on 'Bankrupt'in which case")
+            print("  you also lose all your earnings. OUCH!!\n")
+            print("The winner is the player with the most money") 
+            print("at the end of the 1oth round")
+            print('Have you understood the rules? (type yes when ready)')
+            player_input()
+            break    
+    
 
 def player_input():
     """
@@ -126,9 +140,10 @@ def select_row():
     global MYSTERY_SENTENCE
     row = random.choice(list(data))
     MYSTERY_SENTENCE = row[0].lower()
-    print("Dear contestants,")
-    print(f"in the '{row[4]}' category.\n")
-    print(f"The guess contains {row[1]} words and {row[2]} letters.\n")
+    print(f"Let's reveal the mystery sentence for round {round}!!\n")
+    print(f"{PLAYER[0]}, {PLAYER[1]}, the mystery sentence is")
+    print(f"in the '{row[4]}' category,\n")
+    print(f"and it contains {row[1]} words and {row[2]} letters.\n")
     print("Take it away!")
     print(MYSTERY_SENTENCE)
     return MYSTERY_SENTENCE
@@ -386,7 +401,6 @@ def main():
     """
     play_game()
     rules()
-    player_input()
     convert_letter(select_row())
 
 
