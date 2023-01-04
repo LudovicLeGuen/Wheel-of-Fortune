@@ -117,8 +117,9 @@ def rules():
             print("  c - you spin the wheel on'Pass your turn'")
             print("  e - you spin the wheel on 'Bankrupt' in which case")
             print("  you also lose all your earnings. OUCH!!\n")
-            print("The player who guess correctly the mystery sentence")
-            print("earns the money accumulated during the round")
+            print("The player who guessed correctly the mystery sentence")
+            print("earns her/his money accumulated during the round")
+            print("The loser loses the round money")
             print("Note that the winners will win 1000$ minimum even if")
             print("they have less at the end of the round")
             print("The winner is the player with the most money")
@@ -186,14 +187,14 @@ def turn_wheel():
     The function gets the cash value from the wheel list.
     """
     global CASH, TURN, PLAYER_BANK
-    print(f'\n{player_turn()}, are you ready to turn the wheel?')
-    input("Press Enter to continue...")
+    print(f'\n{player_turn()}, you have spun the wheel.')
+    print("Aaaaanndd ... it ... lands.... on...\n")
 
     CASH = random.choice(WHEEL)
 
     if CASH == "Bankrupt":
         print("\n")
-        print("OH NOOOOO! YOU FELL ON BANKRUPT.")
+        print("OH NOOOOO! It FELL ON BANKRUPT.")
         print("You lose ALL your earnings and pass your turn!!!")
         print("That is really unlucky and painful. GOSH!!")
         PLAYER_BANK[TURN % 2] = 0
@@ -202,15 +203,14 @@ def turn_wheel():
 
     elif CASH == "Pass your turn":
         print("\n")
-        print("Too bad, you fell on PASS YOUR TURN.")
+        print(f"PASS YOUR TURN!! Too bad {player_turn()}")
         print("It is now your opponent turn.")
         print("Sorry")
         TURN += 1
         turn_wheel()
 
     else:
-        print(f"\nWell done!{player_turn()}!")
-        print(f"You play for {CASH}$")
+        print(f"{CASH}$")
         player_guess()
 
 
@@ -220,7 +220,7 @@ def player_guess():
     if the guess has been guessed before and if the user guessed
     a single letter.
     """
-    print(f"\n{player_turn()}, what will be your consonant?")
+    print(f"\n{player_turn()}, what consonant do you choose for {CASH}$?")
     global GUESS, TURN
     while True:
         GUESS = input("-> \n")
