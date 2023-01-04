@@ -113,10 +113,10 @@ def rules():
             print("  a - your guess is not in the mystery sentence")
             print("  b - you guess incorrecty the mystery sentence")
             print("  c - you spin the wheel on'Pass your turn'")
-            print("  d - you spin the wheel on 'Bankrupt'in which case")
+            print("  d - you spin the wheel on 'Bankrupt' in which case")
             print("  you also lose all your earnings. OUCH!!\n")
             print("The winner is the player with the most money")
-            print("at the end of the 1oth round")
+            print("at the end of the 10th round")
             print('Have you understood the rules? (type yes when ready)')
             player_input()
             break
@@ -138,7 +138,6 @@ def player_input():
         else:
             print('Very well. Here we go!')
             break
-        return user_input.lower()
 
 
 def select_row():
@@ -182,31 +181,29 @@ def turn_wheel():
     """
     global CASH, TURN, PLAYER_BANK
     print(f'\n{player_turn()}, are you ready to turn the wheel?')
-    print("(type yes when ready)")
-
-    player_input()
+    input("Press Enter to continue...")
 
     CASH = random.choice(WHEEL)
 
     if CASH == "Bankrupt":
         print("\n")
-        print("OH GOSH! You fell on BANKRUPT.")
-        print("You lose ALL your earnings and pass your turn")
-        print("That is really unlucky")
+        print("OH NOOOOO! YOU FELL ON BANKRUPT.")
+        print("You lose ALL your earnings and pass your turn!!!")
+        print("That is really unlucky and painful. GOSH!!")
         PLAYER_BANK[TURN % 2] = 0
         TURN += 1
         turn_wheel()
 
     elif CASH == "Pass your turn":
         print("\n")
-        print("Too bad, You fell on PASS YOUR TURN.")
+        print("Too bad, you fell on PASS YOUR TURN.")
         print("It is now your opponent turn.")
         print("Sorry")
         TURN += 1
         turn_wheel()
 
     else:
-        print(f"Well done!{player_turn()}!")
+        print(f"\nWell done!{player_turn()}!")
         print(f"You play for {CASH}$")
         player_guess()
 
@@ -217,35 +214,32 @@ def player_guess():
     if the guess has been guessed before and if the user guessed
     a single letter.
     """
-    print("\n")
-    print(f"{player_turn()} What will be your consonant?")
-    global GUESS
+    print(f"\n{player_turn()}, what will be your consonant?")
+    global GUESS, TURN
     while True:
-        GUESS = input("Type a consonant -> \n")
+        GUESS = input("-> \n")
 
         if len(GUESS) != 1:
             print(f"Sorry {player_turn()} we need only one letter.")
-            print("Please guess a single consonant")
-            print("\n")
+            print("Please guess a single consonant.\n")
             continue
 
         elif GUESS not in CONSONANT:
             print(f"Sorry {GUESS.upper()} is not a consonant.")
-            print("Please enter a consonant")
-            print("\n")
+            print("Please enter a consonant.\n")
             continue
 
         elif GUESS in guessed_letters:
             print(f"Sorry, {GUESS.upper()} has already been guessed.")
-            print("Please enter another consonant")
-            print("\n")
-            continue
+            print(f"You unfortunately lose you turn {player_turn()}.\n")
+            TURN += 1
+            turn_wheel()
+            break
 
         else:
             print(f"Thank you {player_turn()}")
             print(f"Let's see if the letter '{GUESS.upper()}' ")
-            print("is in the mystery sentence.")
-            print("\n")
+            print("is in the mystery sentence.\n")
             guessed_letters.append(GUESS)
             compare_print()
             break
@@ -267,17 +261,19 @@ def compare_print():
     print(HIDE_SENTENCE)
 
     letter_count = MYSTERY_SENTENCE.count(GUESS)
-    print("\nCongratulations")
+    
     if letter_count == 1:
+        print("\nCongratulations")
         print(f"{GUESS.upper()} is found once in the mystery sentence.")
 
     elif letter_count == 0:
         print(f"{GUESS.upper()} is not in the mystery sentence.")
-        print(f"{player_turn()}, you pass your turn\n")
+        print(f"{player_turn()}, you pass your turn.\n")
         TURN += 1
         turn_wheel()
 
     else:
+        print("\nCongratulations")
         print(f"{GUESS.upper()} is found {letter_count} times")
         print("in the sentence!")
 
