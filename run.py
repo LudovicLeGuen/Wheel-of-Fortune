@@ -19,6 +19,7 @@ SHEET = GSPREAD_CLIENT.open('wheel-of-fortune')
 
 PLAYER = ["", ""]
 PLAYER_BANK = [0, 0]
+ROUND_BANK = [0, 0]
 CASH = 0
 ROUND = 1
 TURN = 0
@@ -110,13 +111,18 @@ def rules():
             print("  b - turn the wheel and find a new consonant")
             print("  c - guess the mystery sentence\n")
             print("- You will pass your turn if:")
-            print("  a - your guess is not in the mystery sentence")
+            print("  a - your letter is not in the mystery sentence")
             print("  b - you guess incorrecty the mystery sentence")
+            print("  c - your letter has already been guessed")
             print("  c - you spin the wheel on'Pass your turn'")
-            print("  d - you spin the wheel on 'Bankrupt' in which case")
+            print("  e - you spin the wheel on 'Bankrupt' in which case")
             print("  you also lose all your earnings. OUCH!!\n")
+            print("The player who guess correctly the mystery sentence")
+            print("earns the money accumulated during the round")
+            print("Note that the winners will win 1000$ minimum even if")
+            print("they have less at the end of the round")
             print("The winner is the player with the most money")
-            print("at the end of the 10th round")
+            print("at the end of the 10th round\n")
             print('Have you understood the rules? (type yes when ready)')
             player_input()
             break
@@ -259,9 +265,10 @@ def compare_print():
         hidden_list[index] = GUESS
         HIDE_SENTENCE = "".join(hidden_list)
     print(HIDE_SENTENCE)
+    print(MYSTERY_SENTENCE)
 
     letter_count = MYSTERY_SENTENCE.count(GUESS)
-    
+
     if letter_count == 1:
         print("\nCongratulations")
         print(f"{GUESS.upper()} is found once in the mystery sentence.")
@@ -278,10 +285,10 @@ def compare_print():
         print("in the sentence!")
 
     price = int(letter_count)*CASH
-    PLAYER_BANK[TURN % 2] = int(price) + int(PLAYER_BANK[TURN % 2])
+    ROUND_BANK[TURN % 2] = int(price) + int(ROUND_BANK[TURN % 2])
     print(f"You earned {price}$!!!")
     print(f"{player_turn()}, you have now have")
-    print(f"{PLAYER_BANK[TURN % 2]}$ in the bank.\n")
+    print(f"{ROUND_BANK[TURN % 2]}$ in the bank.\n")
     print(f"Dear {player_turn()}")
     print("Now that you have found a correct consonant in ")
     print("the mystery sentence, you are allowed to either: ")
@@ -315,7 +322,7 @@ def guess_sentence():
     If the answer is wrong the second player can play.
     if the answer is correct, the round changes with a new mystery sentence
     """
-    global TURN, ROUND
+    global TURN, ROUND, PLAYER_BANK, ROUND_BANK
     print("\n")
     print(f"Very well {player_turn()}.")
     print("Be sure to insert all your letters in lowercase")
@@ -324,12 +331,36 @@ def guess_sentence():
     user_input = input("-> \n")
 
     if user_input == MYSTERY_SENTENCE:
-        print("\n")
-        print(f"CONGRATULATIONS {player_turn()}!!!")
+        print(f"\nCONGRATULATIONS {player_turn()}!!!")
         print(f"The answer was indeed {MYSTERY_SENTENCE}!!!")
+
+        if int(ROUND_BANK[TURN % 2]) > 1000:
+            print(f"You have totalized {ROUND_BANK[TURN % 2]}$ during")
+            print(" this round. Congratulations!!!\n")
+            PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) \
+                + int(ROUND_BANK[TURN % 2])
+
+        else:
+            print("You have won a 1000$ in this round\n")
+            PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) + 1000
+
+        print("Let's recapitulate the score:")
+        print(f"{PLAYER[0]} you own {PLAYER_BANK[0]}$")
+        print(f"{PLAYER[1]} you own {PLAYER_BANK[1]}$")
+
+        if int(PLAYER_BANK[0]) == int(PLAYER_BANK[1]):
+            print("Ladies and gentlemen, the game is tied.")
+            print("Now that's what I call entertainment!")
+
+        elif int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):
+            print(f"{PLAYER[1]}, I count on you to fight back")
+
+        else:
+            print(f"{PLAYER[0]}, do not give up!!!")
+
         ROUND += 1
-        print(f"It is now time to move onto Round {ROUND}!!!\n")
         print("\n")
+        print(f"\nIt is now time to move onto Round {ROUND}!!!\n")
         convert_letter(select_row())
 
     else:
@@ -349,7 +380,7 @@ def buy_vowel():
     to checks if the vowel is in the mystery sentence"""
 
     global GUESS, HIDE_SENTENCE, PLAYER_BANK, TURN
-    PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) - 250
+    ROUND_BANK[TURN % 2] = int(ROUND_BANK[TURN % 2]) - 250
 
     while True:
         GUESS = input("Buy a vowel -> \n")
