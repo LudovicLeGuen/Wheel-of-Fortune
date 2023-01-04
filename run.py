@@ -66,10 +66,10 @@ def play_game():
     print("Hello and welcome to the Wheel ... of ...  Fortuuuuuune!")
     print("\nMy Name is Mr Boty and I will be your host!\n")
     print("Lets introduce our 2 contestants.\n")
-    PLAYER[0] = (input("Contestant 1. What is your name please? "))
+    PLAYER[0] = (input("Contestant 1. What is your name please? \n"))
     print(f"Welcome and good luck {PLAYER[0]} \n")
 
-    PLAYER[1] = (input("Contestant 2. How should we call you? "))
+    PLAYER[1] = (input("Contestant 2. How should we call you? \n"))
     print(f"Thank you and good luck to you too {PLAYER[1]} \n")
     print("I hope you will have as much fun as I will\n")
     print("But before we start the game\n")
@@ -83,7 +83,7 @@ def rules():
     """
 
     while True:
-        user_input = input("yes or no? -> ")
+        user_input = input("yes or no? -> \n")
         if user_input == "no":
             print("Excellent. I see that we have 2 experts today.")
             print("It is going to be reaaaaaally fun!!\n")
@@ -128,7 +128,7 @@ def player_input():
     """
     user_input = ''
     while True:
-        user_input = input("->")
+        user_input = input("-> \n")
 
         if user_input.lower() != 'yes':
             print("It's ok. We have all the time in the world")
@@ -148,7 +148,7 @@ def select_row():
     said by Mr Boty and the sentence to guess in the turn.
     """
     global MYSTERY_SENTENCE, ROUND, TURN
-    TURN = int(ROUND) - 1 
+    TURN = int(ROUND) - 1
     row = random.choice(list(data))
     MYSTERY_SENTENCE = row[0].lower()
     print(f"Let's reveal the mystery sentence for round {ROUND}!!\n")
@@ -221,7 +221,7 @@ def player_guess():
     print(f"{player_turn()} What will be your consonant?")
     global GUESS
     while True:
-        GUESS = input("Type a consonant -> ")
+        GUESS = input("Type a consonant -> \n")
 
         if len(GUESS) != 1:
             print(f"Sorry {player_turn()} we need only one letter.")
@@ -276,7 +276,7 @@ def compare_print():
         print(f"{player_turn()}, you pass your turn\n")
         TURN += 1
         turn_wheel()
-    
+
     else:
         print(f"{GUESS.upper()} is found {letter_count} times")
         print("in the sentence!")
@@ -295,7 +295,7 @@ def compare_print():
     print("\n")
     print(f"{player_turn()}, what is your choice please? a, b or c?")
     while True:
-        user_input = input("-> ")
+        user_input = input("-> \n")
         if user_input == "a":
             buy_vowel()
             break
@@ -325,7 +325,7 @@ def guess_sentence():
     print("Be sure to insert all your letters in lowercase")
     print("For example -> i love jamaica")
     print("Good Luck")
-    user_input = input("->")
+    user_input = input("-> \n")
 
     if user_input == MYSTERY_SENTENCE:
         print("\n")
@@ -333,7 +333,7 @@ def guess_sentence():
         print(f"The answer was indeed {MYSTERY_SENTENCE}!!!")
         ROUND += 1
         print(f"It is now time to move onto Round {ROUND}!!!\n")
-        print("\n")        
+        print("\n")
         convert_letter(select_row())
 
     else:
@@ -356,7 +356,7 @@ def buy_vowel():
     PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) - 250
 
     while True:
-        GUESS = input("Buy a vowel -> ")
+        GUESS = input("Buy a vowel -> \n")
         if len(GUESS) != 1:
             print(f"Sorry {player_turn()} we need a single letter.")
             print("Please guess a single vowel\n")
@@ -413,7 +413,7 @@ def buy_vowel():
     print("  c - guess the mystery sentence\n")
     print(f"{player_turn()}, what is your choice please? a, b or c?")
     while True:
-        user_input = input("-> ")
+        user_input = input("-> \n")
         if user_input == "a":
             buy_vowel()
             break
