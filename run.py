@@ -52,9 +52,9 @@ def print(s):
 def player_turn():
     """
     This function defines the player who will play
-    the turn by populating the index with a 0 or a 1
-    thanks to the modulo.
-    Player[0]= player 1, PLAYER[1] = player 2
+    the turn by populating the PLAYER variable index with
+    a 0 or a 1 thanks to the modulo.
+    PLAYER[0]= player 1, PLAYER[1] = player 2
     """
     return PLAYER[TURN % 2]
 
@@ -65,16 +65,42 @@ def play_game():
     """
     global PLAYER
     print("Hello and welcome to the Wheel ... of ...  Fortuuuuuune!")
-    print("\nMy Name is Mr Boty and I will be your host!\n")
-    print("Lets introduce our 2 contestants.\n")
-    PLAYER[0] = (input("Contestant 1. What is your name please? \n"))
-    print(f"Welcome and good luck {PLAYER[0]} \n")
+    print("\nMy Name is Mr Boty and I will be your host!")
+    print("I am really glad to have you with us today.")
+    print("Lets start by introducing our 2 contestants shall we?\n")
+    print("Contestant 1. What is your name please?")
+    while True:
+        PLAYER[0] = (input("-> \n"))
+        if len(PLAYER[0]) == 0:
+            print("Don't be shy. I know I am intimidating but please")
+            print("name yourself so the audience can recognize you.")
 
-    PLAYER[1] = (input("Contestant 2. How should we call you? \n"))
-    print(f"Thank you and good luck to you too {PLAYER[1]} \n")
-    print("I hope you will have as much fun as I will\n")
+        elif len(PLAYER[0]) > 10:
+            print("WOW, I will never remember such a long name.\n")
+            print("Do you have a nickname I would rather use?")
+
+        else:
+            print(f"Welcome and good luck {PLAYER[0]} \n")
+            break
+
+    print("Contestant 2. What is your name please?")
+    while True:
+        PLAYER[1] = (input("-> \n"))
+        if len(PLAYER[1]) == 0:
+            print("Don't be shy. I know I am intimidating but please")
+            print("name yourself so the audience can recognize you.")
+
+        elif len(PLAYER[1]) > 10:
+            print("WOW, I will never remember such a long name.\n")
+            print("Do you have a nickname I would rather use?")
+
+        else:
+            print(f"Welcome and good luck {PLAYER[1]} \n")
+            break
+
+    print("I hope you will both have fun.\n")
     print("But before we start the game\n")
-    print("Would you like to consult the rules?\n")
+    print("would you like to consult the rules?\n")
 
 
 def rules():
@@ -114,7 +140,7 @@ def rules():
             print("  a - your letter is not in the mystery sentence")
             print("  b - you guess incorrecty the mystery sentence")
             print("  c - your letter has already been guessed")
-            print("  c - you spin the wheel on'Pass your turn'")
+            print("  c - you spin the wheel on 'Pass your turn'")
             print("  e - you spin the wheel on 'Bankrupt' in which case")
             print("  you also lose all your earnings. OUCH!!\n")
             print("The player who guessed correctly the mystery sentence")
@@ -186,7 +212,7 @@ def turn_wheel():
     """
     The function gets the cash value from the wheel list.
     """
-    global CASH, TURN, PLAYER_BANK
+    global CASH, TURN
     print(f'\n{player_turn()}, you have spun the wheel.')
     print("Aaaaanndd ... it ... lands.... on...\n")
 
@@ -256,7 +282,7 @@ def compare_print():
     sentence and print the letters that are correct.
     The function then gives a choice to the player who can either
     guess the sentence, buy a vowel or turn the wheel again"""
-    global HIDE_SENTENCE, PLAYER_BANK, TURN
+    global HIDE_SENTENCE, TURN
     hidden_list = list(HIDE_SENTENCE)
     indices = [
         i for i, letter in enumerate(MYSTERY_SENTENCE) if letter == GUESS
@@ -265,7 +291,6 @@ def compare_print():
         hidden_list[index] = GUESS
         HIDE_SENTENCE = "".join(hidden_list)
     print(HIDE_SENTENCE)
-    print(MYSTERY_SENTENCE)
 
     letter_count = MYSTERY_SENTENCE.count(GUESS)
 
@@ -274,7 +299,7 @@ def compare_print():
         print(f"{GUESS.upper()} is found once in the mystery sentence.")
 
     elif letter_count == 0:
-        print(f"{GUESS.upper()} is not in the mystery sentence.")
+        print(f"\n{GUESS.upper()} is not in the mystery sentence.")
         print(f"{player_turn()}, you pass your turn.\n")
         TURN += 1
         turn_wheel()
@@ -286,19 +311,23 @@ def compare_print():
 
     price = int(letter_count)*CASH
     ROUND_BANK[TURN % 2] = int(price) + int(ROUND_BANK[TURN % 2])
-    print(f"You earned {price}$!!!")
-    print(f"{player_turn()}, you have now have")
+    print(f"\nYou earned {price}$!!!")
+    print(f"{player_turn()}, you now have")
     print(f"{ROUND_BANK[TURN % 2]}$ in the bank.\n")
-    print(f"Dear {player_turn()}")
-    print("Now that you have found a correct consonant in ")
-    print("the mystery sentence, you are allowed to either: ")
-    print("  a - buy a Vowel for 250$")
-    print("  b - turn the wheel and find a new consonant")
+    print(f"{player_turn()} you guesses a correct consonant.")
+    print("what is your next move please?")
+    print("  a - buy a vowel for 250$")
+    print("  b - turn the wheel and guess another consonant")
     print("  c - guess the mystery sentence")
-    print("\n")
-    print(f"{player_turn()}, what is your choice please? a, b or c?")
+
+    if int(ROUND_BANK[TURN % 2]) < 250:
+        print(f"I apologize {player_turn()} but you do not") 
+        print("have enough money to buy a vowel.") 
+        print("You have to guess the sentence")
+        guess_sentence()
+
     while True:
-        user_input = input("-> \n")
+        user_input = input("a, b or c? -> \n")
         if user_input == "a":
             buy_vowel()
             break
@@ -322,7 +351,7 @@ def guess_sentence():
     If the answer is wrong the second player can play.
     if the answer is correct, the round changes with a new mystery sentence
     """
-    global TURN, ROUND, PLAYER_BANK, ROUND_BANK
+    global TURN, ROUND, ROUND_BANK
     print("\n")
     print(f"Very well {player_turn()}.")
     print("Be sure to insert all your letters in lowercase")
@@ -361,6 +390,10 @@ def guess_sentence():
         ROUND += 1
         print("\n")
         print(f"\nIt is now time to move onto Round {ROUND}!!!\n")
+        print("Dear contestants your earnings for the round")
+        print("are obviously reset to 0.\n")
+        ROUND_BANK = [0, 0]
+        guessed_letters.clear()
         convert_letter(select_row())
 
     else:
@@ -379,7 +412,7 @@ def buy_vowel():
     Then the function calls compare_print()
     to checks if the vowel is in the mystery sentence"""
 
-    global GUESS, HIDE_SENTENCE, PLAYER_BANK, TURN
+    global GUESS, HIDE_SENTENCE, TURN
     ROUND_BANK[TURN % 2] = int(ROUND_BANK[TURN % 2]) - 250
 
     while True:
@@ -431,14 +464,12 @@ def buy_vowel():
         print("in the sentence!\n")
 
     print(f"{player_turn()}, you have now have")
-    print(f"{PLAYER_BANK[TURN % 2]}$ in the bank.\n")
-    print(f"Dear {player_turn()}")
-    print("Now that you have found a correct consonant in ")
-    print("the mystery sentence, you are allowed to either: ")
-    print("  a - buy a Vowel for 250$")
+    print(f"{ROUND_BANK[TURN % 2]}$ in the bank.\n")
+    print(f"{player_turn()} you guesses a correct vowel.")
+    print("what is your next move please?")
+    print("  a - buy another vowel for 250$")
     print("  b - turn the wheel and find a new consonant")
-    print("  c - guess the mystery sentence\n")
-    print(f"{player_turn()}, what is your choice please? a, b or c?")
+    print("  c - guess the mystery sentence")
     while True:
         user_input = input("-> \n")
         if user_input == "a":
