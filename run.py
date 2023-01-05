@@ -321,8 +321,8 @@ def compare_print():
     print("  c - guess the mystery sentence")
 
     if int(ROUND_BANK[TURN % 2]) < 250:
-        print(f"I apologize {player_turn()} but you do not") 
-        print("have enough money to buy a vowel.") 
+        print(f"I apologize {player_turn()} but you do not")
+        print("have enough money to buy a vowel.")
         print("You have to guess the sentence")
         guess_sentence()
 
@@ -349,9 +349,9 @@ def guess_sentence():
     The function allows the player to guess directly
     the sentence for a chance to win the round.
     If the answer is wrong the second player can play.
-    if the answer is correct, the round changes with a new mystery sentence
+    if the answer is correct the winning_guess function is called
     """
-    global TURN, ROUND, ROUND_BANK
+    global TURN
     print("\n")
     print(f"Very well {player_turn()}.")
     print("Be sure to insert all your letters in lowercase")
@@ -360,41 +360,7 @@ def guess_sentence():
     user_input = input("-> \n")
 
     if user_input == MYSTERY_SENTENCE:
-        print(f"\nCONGRATULATIONS {player_turn()}!!!")
-        print(f"The answer was indeed {MYSTERY_SENTENCE}!!!")
-
-        if int(ROUND_BANK[TURN % 2]) > 1000:
-            print(f"You have totalized {ROUND_BANK[TURN % 2]}$ during")
-            print(" this round. Congratulations!!!\n")
-            PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) \
-                + int(ROUND_BANK[TURN % 2])
-
-        else:
-            print("You have won a 1000$ in this round\n")
-            PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) + 1000
-
-        print("Let's recapitulate the score:")
-        print(f"{PLAYER[0]} you own {PLAYER_BANK[0]}$")
-        print(f"{PLAYER[1]} you own {PLAYER_BANK[1]}$")
-
-        if int(PLAYER_BANK[0]) == int(PLAYER_BANK[1]):
-            print("Ladies and gentlemen, the game is tied.")
-            print("Now that's what I call entertainment!")
-
-        elif int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):
-            print(f"{PLAYER[1]}, I count on you to fight back")
-
-        else:
-            print(f"{PLAYER[0]}, do not give up!!!")
-
-        ROUND += 1
-        print("\n")
-        print(f"\nIt is now time to move onto Round {ROUND}!!!\n")
-        print("Dear contestants your earnings for the round")
-        print("are obviously reset to 0.\n")
-        ROUND_BANK = [0, 0]
-        guessed_letters.clear()
-        convert_letter(select_row())
+        winning_guess()
 
     else:
         print("\n")
@@ -403,6 +369,53 @@ def guess_sentence():
         print("you pass your turn")
         TURN += 1
         turn_wheel()
+
+
+def winning_guess():
+    """
+    The function gives the money to the winning player, 
+    reset the round bank accounts,
+    empty the guessed letters, 
+    goes 1 round up and calls the convert_letter function
+    to start a new mystery sentence.
+    """
+    global ROUND, ROUND_BANK
+
+    print(f"\nCONGRATULATIONS {player_turn()}!!!")
+    print(f"The answer was indeed {MYSTERY_SENTENCE}!!!")
+
+    if int(ROUND_BANK[TURN % 2]) > 1000:
+        print(f"You have totalized {ROUND_BANK[TURN % 2]}$ during")
+        print(" this round. Congratulations!!!\n")
+        PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) \
+            + int(ROUND_BANK[TURN % 2])
+
+    else:
+        print("You have won a 1000$ in this round\n")
+        PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) + 1000
+
+    print("Let's recapitulate the score:")
+    print(f"{PLAYER[0]} you own {PLAYER_BANK[0]}$")
+    print(f"{PLAYER[1]} you own {PLAYER_BANK[1]}$")
+
+    if int(PLAYER_BANK[0]) == int(PLAYER_BANK[1]):
+        print("Ladies and gentlemen, the game is tied.")
+        print("Now that's what I call entertainment!")
+
+    elif int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):
+        print(f"{PLAYER[1]}, I count on you to fight back")
+
+    else:
+        print(f"{PLAYER[0]}, do not give up!!!")
+
+    ROUND += 1
+    print("\n")
+    print(f"\nIt is now time to move onto Round {ROUND}!!!\n")
+    print("Dear contestants your earnings for the round")
+    print("are obviously reset to 0.\n")
+    ROUND_BANK = [0, 0]
+    guessed_letters.clear()
+    convert_letter(select_row())
 
 
 def buy_vowel():
