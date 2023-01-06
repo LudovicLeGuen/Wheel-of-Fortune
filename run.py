@@ -205,7 +205,7 @@ def convert_letter(MYSTERY_SENTENCE):
     for i in range(0, len(MYSTERY_SENTENCE)):
         if ord(MYSTERY_SENTENCE[i]) != 32:
             HIDE_SENTENCE = HIDE_SENTENCE.replace(MYSTERY_SENTENCE[i], '_')
-    
+
     print(HIDE_SENTENCE)
     turn_wheel()
 
@@ -222,17 +222,38 @@ def turn_wheel():
     CASH = random.choice(WHEEL)
 
     if CASH == "Bankrupt":
-        print("\n")
-        print("OH NOOOOO! It FELL ON BANKRUPT.")
-        print("You lose ALL your earnings and pass your turn!!!")
-        print("That is really unlucky and painful. GOSH!!")
+        if ROUND_BANK[TURN % 2] == 0:
+            print("It fell on bankrupt.")
+            print(f"Well, it is not really a loss {player_turn()}.")
+            print("You did not have any money in the bank.")
+            print("Nevertheless you lose you turn.")
+
+        elif ROUND_BANK[TURN % 2] < 2000:
+            print("It fell on bankrupt.")
+            print(f"You lose {ROUND_BANK[TURN % 2]}$ {player_turn()}.")
+            print("It's tough but I believe in you.")
+            print("It's your oppopent's turn now.")
+
+        elif ROUND_BANK[TURN % 2] < 4000:
+            print("OH NOOOOO!")
+            print(f"{ROUND_BANK[TURN % 2]}$ {player_turn()}.... gone.")
+            print("I feel for you, really I do. It is not the end yet but...")
+            print("your oppopent has the hand now.")
+        else:
+            print("NOOOOOOO, BANKRUPT!!!!")
+            print("OOOOOH lordy lord... I am speechless.")
+            print(f"You had {ROUND_BANK[TURN % 2]}$ {player_turn()}")
+            print(f"{ROUND_BANK[TURN % 2]}$ !!!!!!!!!!!!")
+            print("That is really unlucky ... reaaaally unlucky")
+            print("Do not forget that you pass your turn too.")
+
         PLAYER_BANK[TURN % 2] = 0
         TURN += 1
         turn_wheel()
 
     elif CASH == "Pass your turn":
         print("\n")
-        print(f"PASS YOUR TURN!! Too bad {player_turn()}")
+        print(f"PASS YOUR TURN!! Too bad {player_turn()}.")
         print("It is now your opponent turn.")
         print("Sorry")
         TURN += 1
@@ -245,8 +266,8 @@ def turn_wheel():
 
 def check_consonant():
     """
-    The function checks if there are still some remaning 
-    consonants to be found in the mystery sentence. If no 
+    The function checks if there are still some remaning
+    consonants to be found in the mystery sentence. If no
     consonants remains to be found, the no_consonant function
     is called, otherwise, the function is passed.
     """
@@ -266,7 +287,7 @@ def check_consonant():
     # https://www.digitalocean.com/community/tutorials/python-remove-character-from-string
 
     mystery_list = list(no_vowel)
- 
+
     if len(guessed_letters) == 0:
         pass
 
@@ -280,8 +301,8 @@ def check_consonant():
 def no_consonant():
     """
     The function is called when all consonants in the sentence are found.
-    It gives only two choices to play since the user cannot spin the wheel 
-    anymore. 
+    It gives only two choices to play since the user cannot spin the wheel
+    anymore.
     """
     print(f"{player_turn()} NO MORE CONSONANT IN THE MYSTERY SENTENCE!")
     print("You can only")
@@ -344,8 +365,6 @@ def compare_print():
     The function then gives a choice to the player who can either
     guess the sentence, buy a vowel or turn the wheel again"""
     global HIDE_SENTENCE, TURN
-    print("* "*20)
-    print(f"{PLAYER[0]} = {ROUND_BANK[0]}$ --- {PLAYER[1]} = {ROUND_BANK[1]}$")
 
     hidden_list = list(HIDE_SENTENCE)
     indices = [
@@ -354,7 +373,7 @@ def compare_print():
     for index in indices:
         hidden_list[index] = GUESS
         HIDE_SENTENCE = "".join(hidden_list)
-    
+    print("* "*20)
     print(f"\n{HIDE_SENTENCE}\n")
     print("* "*20)
 
@@ -377,9 +396,8 @@ def compare_print():
 
     price = int(letter_count)*CASH
     ROUND_BANK[TURN % 2] = int(price) + int(ROUND_BANK[TURN % 2])
-    print(f"\nYou earned {price}$!!!")
-    print(f"{player_turn()}, you now have")
-    print(f"{ROUND_BANK[TURN % 2]}$ in the bank.\n")
+    print(f"\n{player_turn()}, you earned {price}$!!!")
+    print(f"{PLAYER[0]} = {ROUND_BANK[0]}$ --- {PLAYER[1]} = {ROUND_BANK[1]}$")
     check_consonant()
     print(f"{player_turn()} you guessed a correct consonant.")
     print("what is your next move please?")
@@ -444,11 +462,11 @@ def winning_round():
     global ROUND, ROUND_BANK
 
     print(f"\nCONGRATULATIONS {player_turn()}!!!")
-    print(f"The answer was indeed {MYSTERY_SENTENCE}!!!")
+    print(f"The answer was indeed {MYSTERY_SENTENCE.upper()}!!!")
 
     if int(ROUND_BANK[TURN % 2]) > 1000:
-        print(f"You have totalized {ROUND_BANK[TURN % 2]}$ during")
-        print(" this round. Congratulations!!!\n")
+        print(f"You have totalized {ROUND_BANK[TURN % 2]}$ in")
+        print("this round.\n")
         PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) \
             + int(ROUND_BANK[TURN % 2])
 
@@ -456,7 +474,9 @@ def winning_round():
         print("You have won a 1000$ in this round\n")
         PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) + 1000
 
-    print("Let's recapitulate the score:")
+    print("This money is now yours and it cannot be taken away.\n")
+    print("You deserve it!\n")
+    print("Let's recapitulate the gains:")
     print(f"{PLAYER[0]} you own {PLAYER_BANK[0]}$")
     print(f"{PLAYER[1]} you own {PLAYER_BANK[1]}$")
 
@@ -465,10 +485,12 @@ def winning_round():
         print("Now that's what I call entertainment!")
 
     elif int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):
-        print(f"{PLAYER[1]}, I count on you to fight back")
+        print(f"Don't worry {PLAYER[1]}, I am sure the")
+        print("next round will be yours.\n")
 
     else:
         print(f"{PLAYER[0]}, do not give up!!!")
+        print("The next round has your name witten all over it!\n")
 
     ROUND += 1
     print("\n")
@@ -498,7 +520,7 @@ def buy_vowel():
     ROUND_BANK[TURN % 2] = int(ROUND_BANK[TURN % 2]) - 250
     print(f"\n{player_turn()}, you chose to buy a vowel.")
     print(f"You have now have {ROUND_BANK[TURN % 2]}$ in the bank.\n")
-    print("What is you vowel?")
+    print("What is your vowel?")
 
     while True:
         GUESS = input("-> \n")
