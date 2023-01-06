@@ -1,8 +1,9 @@
 """
 The Wheel or fortune game.
+"""
 
 import sys
-import time"""
+import time
 import random
 import gspread
 from google.oauth2.service_account import Credentials
@@ -39,15 +40,15 @@ WHEEL = ["Bankrupt", 600, 400, 300, "Pass your turn",
 title = SHEET.worksheet('title')
 data = title.get_all_values()
 
-"""
+
 def print(s):
-
-
+    """
     Used to add a typing effect when printing on the terminal
+    """
     for letters in s + '\n':
         sys.stdout.write(letters)
         sys.stdout.flush()
-        time.sleep(1./25)"""
+        time.sleep(1./25)
 
 
 def player_turn():
@@ -204,7 +205,7 @@ def convert_letter(MYSTERY_SENTENCE):
     for i in range(0, len(MYSTERY_SENTENCE)):
         if ord(MYSTERY_SENTENCE[i]) != 32:
             HIDE_SENTENCE = HIDE_SENTENCE.replace(MYSTERY_SENTENCE[i], '_')
-    print(MYSTERY_SENTENCE)
+    
     print(HIDE_SENTENCE)
     turn_wheel()
 
@@ -265,9 +266,7 @@ def check_consonant():
     # https://www.digitalocean.com/community/tutorials/python-remove-character-from-string
 
     mystery_list = list(no_vowel)
-    print("this is guessed letters" + str(guessed_letters))
-    print("this is mystery list" + str(mystery_list))
-
+ 
     if len(guessed_letters) == 0:
         pass
 
@@ -345,6 +344,9 @@ def compare_print():
     The function then gives a choice to the player who can either
     guess the sentence, buy a vowel or turn the wheel again"""
     global HIDE_SENTENCE, TURN
+    print("* "*20)
+    print(f"{PLAYER[0]} = {ROUND_BANK[0]}$ --- {PLAYER[1]} = {ROUND_BANK[1]}$")
+
     hidden_list = list(HIDE_SENTENCE)
     indices = [
         i for i, letter in enumerate(MYSTERY_SENTENCE) if letter == GUESS
@@ -352,7 +354,9 @@ def compare_print():
     for index in indices:
         hidden_list[index] = GUESS
         HIDE_SENTENCE = "".join(hidden_list)
-    print(HIDE_SENTENCE)
+    
+    print(f"\n{HIDE_SENTENCE}\n")
+    print("* "*20)
 
     letter_count = MYSTERY_SENTENCE.count(GUESS)
 
@@ -425,6 +429,7 @@ def guess_sentence():
         print("The answer is incorrect,")
         print("you pass your turn")
         TURN += 1
+        check_consonant()
         turn_wheel()
 
 
@@ -487,15 +492,19 @@ def buy_vowel():
     if int(ROUND_BANK[TURN % 2]) < 250:
         print(f"I apologize {player_turn()} but you do not")
         print("have enough money to buy a vowel.")
+        print("You have no other choice than guessing the sentence")
         guess_sentence()
 
     ROUND_BANK[TURN % 2] = int(ROUND_BANK[TURN % 2]) - 250
+    print(f"\n{player_turn()}, you chose to buy a vowel.")
+    print(f"You have now have {ROUND_BANK[TURN % 2]}$ in the bank.\n")
+    print("What is you vowel?")
 
     while True:
-        GUESS = input("Buy a vowel -> \n")
+        GUESS = input("-> \n")
         if len(GUESS) != 1:
             print(f"Sorry {player_turn()} we need a single letter.")
-            print("Please guess a single vowel\n")
+            print("Please insert a single vowel\n")
             continue
 
         elif GUESS not in VOWELS:
@@ -507,6 +516,7 @@ def buy_vowel():
             print(f"Sorry, {GUESS.upper()} has already been guessed.")
             print(f"You unfortunately lose you turn {player_turn()}.\n")
             TURN += 1
+            check_consonant()
             turn_wheel()
             break
 
@@ -535,14 +545,12 @@ def buy_vowel():
         print(f"{GUESS.upper()} is not in the mystery sentence.")
         print(f"{player_turn()}, you pass your turn\n")
         TURN += 1
+        check_consonant()
         turn_wheel()
 
     else:
         print(f"{GUESS.upper()} is found {letter_count} times")
         print("in the sentence!\n")
-
-    print(f"{player_turn()}, you have now have")
-    print(f"{ROUND_BANK[TURN % 2]}$ in the bank.\n")
 
     check_consonant()
 
