@@ -1,9 +1,9 @@
 """
 The Wheel or fortune game.
-"""
+
 
 import sys
-import time
+import time"""
 import random
 import gspread
 from google.oauth2.service_account import Credentials
@@ -23,6 +23,7 @@ PLAYER_BANK = [0, 0]
 ROUND_BANK = [0, 0]
 CASH = 0
 ROUND = 1
+NUM_ROUND = 0
 TURN = 0
 guessed_letters = []
 GUESS = ""
@@ -40,15 +41,15 @@ WHEEL = ["Bankrupt", 600, 400, 300, "Pass your turn",
 title = SHEET.worksheet('title')
 data = title.get_all_values()
 
-
+"""
 def print(s):
-    """
+
     Used to add a typing effect when printing on the terminal
-    """
+
     for letters in s + '\n':
         sys.stdout.write(letters)
         sys.stdout.flush()
-        time.sleep(1./25)
+        time.sleep(1./25)"""
 
 
 def player_turn():
@@ -99,9 +100,30 @@ def play_game():
             print(f"Welcome and good luck {PLAYER[1]}\n")
             break
 
-    print("I hope you will both have fun.\n")
+    num_round()
+
+
+def num_round():
+    """
+    Function determines how many rounds should be played.
+    """
+    global NUM_ROUND
+    print("How many rounds would you like play today?")
+    while True:
+        try:
+            NUM_ROUND = int(input("between 2 and 10: "))
+        except ValueError:
+            print("Please enter a valid integer 2-10")
+            continue
+        if NUM_ROUND >= 2 and NUM_ROUND <= 10:
+            print(f"\nExcellent. Today we will play {NUM_ROUND} Rounds.\n")
+            break
+        else:
+            print('The integer must be in the range 2-10')
+
     print("But before we start the game,\n")
     print("would you like to consult the rules?\n")
+    rules()
 
 
 def rules():
@@ -113,9 +135,10 @@ def rules():
     while True:
         user_input = input("yes or no? -> \n")
         if user_input == "no":
-            print("Excellent. I see that we have 2 experts today.")
+            print("Fantastic. I see that we have 2 experts today.")
             print("It is going to be reaaaaaally fun!!\n")
             print("Ladies and Gentlemen. Without further ado.\n")
+            print("LET'S PLAY THE WHEEL ... OF ...  FORTUUUUUNNE!")
             break
 
         elif (user_input != "no" and user_input != "yes"):
@@ -144,13 +167,14 @@ def rules():
             print("  c - you spin the wheel on 'Pass your turn'")
             print("  e - you spin the wheel on 'Bankrupt' in which case")
             print("  you also lose all your earnings. OUCH!!\n")
-            print("The player who guessed correctly the mystery sentence")
-            print("earns her/his money accumulated during the round.")
-            print("The loser loses the round money.")
-            print("Note that the winners will win 1000$ minimum even if")
-            print("they have less at the end of the round.")
-            print("The winner is the player with the most money")
-            print("at the end of the 10th round.\n")
+            print("- The player who guessed correctly the mystery sentence")
+            print("  earns her/his money accumulated during the round.")
+            print("- The loser loses the round money.")
+            print("- Note that the winners will win 1000$ minimum even if")
+            print("  they have less at the end of the round.")
+            print("- The last round money prize will mulptiplied by 3.")
+            print("- The winner is the player with the most money")
+            print("  at the end of all rounds.\n")
             print('All good? Are you ready to continue? (type yes when ready)')
             player_input()
             break
@@ -170,21 +194,36 @@ def player_input():
             continue
 
         else:
-            print('Very well. Here we go!')
+            print("LET'S PLAY THE WHEEL ... OF ...  FORTUUUUUNNE!")
             break
 
 
 def select_row():
     """
     The function selects randomly a row in the google
-    worksheet called "title" and creates a quote
-    said by Mr Boty and the sentence to guess in the turn.
+    worksheet called "title" and creates the sentence
+    to guess in the turn.
     """
     global MYSTERY_SENTENCE, TURN
     TURN = int(ROUND) - 1
     row = random.choice(list(data))
     MYSTERY_SENTENCE = row[0].lower()
-    print(f"Let's reveal the mystery sentence for round {ROUND}!!\n")
+
+    if int(ROUND) == int(NUM_ROUND):
+        print("Dear contestants, this is the final Round.")
+        print("As you probably already know, the winner's gains")
+        print("will be multiplied by 3 at the end.\n")
+
+        if int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):
+            print(f"{PLAYER[1]}, this is your chance.")
+            print(f"{PLAYER[0]}, be cautious. Everything is possible\n")
+
+        else:
+            print(f"{PLAYER[0]}, this is your chance.")
+            print(f"{PLAYER[1]}, be cautious. Everything is possible\n")
+    else:
+        print(f"Let's reveal the mystery sentence for Round {ROUND}!!\n")
+
     print(f"The mystery sentence is in the '{row[4]}' category\n")
     print(f"and it contains {row[1]} words and {row[2]} letters.\n")
     print("GOOD LUCK!")
@@ -204,7 +243,6 @@ def convert_letter(MYSTERY_SENTENCE):
     for i in range(0, len(MYSTERY_SENTENCE)):
         if ord(MYSTERY_SENTENCE[i]) != 32:
             HIDE_SENTENCE = HIDE_SENTENCE.replace(MYSTERY_SENTENCE[i], '_')
-
     print(HIDE_SENTENCE)
     turn_wheel()
 
@@ -466,15 +504,36 @@ def winning_round():
     if int(ROUND_BANK[TURN % 2]) > 1000:
         print(f"You have totalized {ROUND_BANK[TURN % 2]}$ in")
         print("this round.\n")
-        PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) \
-            + int(ROUND_BANK[TURN % 2])
+
+        if int(ROUND) == int(NUM_ROUND):
+            print("And since this was the last one")
+            print("it is multiplied by 3!\n")
+            print(f"You earned {int(ROUND_BANK[TURN % 2]) * 3}$!")
+            PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2])\
+                + int(ROUND_BANK[TURN % 2])*3
+
+        else:
+            PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2])\
+                + int(ROUND_BANK[TURN % 2])
 
     else:
         print("You have won 1000$ in this round\n")
-        PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) + 1000
+
+        if int(ROUND) == int(NUM_ROUND):
+            print("And since this was the last one")
+            print("it is multiplied by 3!\n")
+            print("You earned 3000$!")
+            PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) + 3000
+
+        else:
+            PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) + 1000
 
     print("This money is now yours and it cannot be taken away.\n")
     print("You deserve it!\n")
+
+    if int(ROUND) == int(NUM_ROUND):
+        game_over()
+
     print("Let's recapitulate the gains:")
     print(f"{PLAYER[0]} you own {PLAYER_BANK[0]}$")
     print(f"{PLAYER[1]} you own {PLAYER_BANK[1]}$")
@@ -494,8 +553,7 @@ def winning_round():
 
     ROUND += 1
 
-    print("\n")
-    print(f"\nIt is now time to move onto Round {ROUND}!!!\n")
+    print(f"\n\nIt is now time to move onto Round {ROUND}!!!\n")
     print("Dear contestants your earnings for the round")
     print("are obviously reset to 0.\n")
 
@@ -564,7 +622,7 @@ def buy_vowel():
 
     print("\nCongratulations")
 
-    letter_count = MYSTERY_SENTENCE.count(GUESS)    
+    letter_count = MYSTERY_SENTENCE.count(GUESS)
     if letter_count == 1:
         print(f"{GUESS.upper()} is found once in the mystery sentence")
 
@@ -605,6 +663,11 @@ def buy_vowel():
 
 
 def game_over():
+    """
+    The function will close the game. It will tell who
+    the winner is and will conclude the game like a
+    host would do.
+    """
     print("AND THIS IS IT!!!!")
     if int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):
         print(f"{PLAYER[0]}")
@@ -613,7 +676,7 @@ def game_over():
 
     else:
         print(f"{PLAYER[1]}")
-        print("YOU... ARE... THE... WINNer!!!!")
+        print("YOU... ARE... THE... WINNER!!!!")
         print(f"You have successfuly saved {PLAYER_BANK[1]}$")
 
     print("Throughout the Rounds")
@@ -626,7 +689,9 @@ def game_over():
     print("Ladies and gentlemen!")
     print("My name is Mr Boty and I will welcome you next time")
     print("to once more turn the....")
-    print("WHELL... OF.... FORTUUUUUNE!!!!")
+    print("WHEEL... OF.... FORTUUUUUNE!!!!")
+
+    exit()
 
 
 def main():
@@ -634,7 +699,6 @@ def main():
     The function that runs other functions
     """
     play_game()
-    rules()
     convert_letter(select_row())
 
 
