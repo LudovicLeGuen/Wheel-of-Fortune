@@ -91,16 +91,16 @@ def play_game():
             print("Don't be shy. I know I am intimidating but please")
             print("name yourself so the audience can recognize you.")
 
-        elif len(PLAYER[1]) > 10:
+        elif len(PLAYER[1]) > 15:
             print("WOW, I will never remember such a long name.\n")
             print("Do you have a nickname I would rather use?")
 
         else:
-            print(f"Welcome and good luck {PLAYER[1]} \n")
+            print(f"Welcome and good luck {PLAYER[1]}\n")
             break
 
     print("I hope you will both have fun.\n")
-    print("But before we start the game\n")
+    print("But before we start the game,\n")
     print("would you like to consult the rules?\n")
 
 
@@ -145,13 +145,13 @@ def rules():
             print("  e - you spin the wheel on 'Bankrupt' in which case")
             print("  you also lose all your earnings. OUCH!!\n")
             print("The player who guessed correctly the mystery sentence")
-            print("earns her/his money accumulated during the round")
-            print("The loser loses the round money")
+            print("earns her/his money accumulated during the round.")
+            print("The loser loses the round money.")
             print("Note that the winners will win 1000$ minimum even if")
-            print("they have less at the end of the round")
+            print("they have less at the end of the round.")
             print("The winner is the player with the most money")
-            print("at the end of the 10th round\n")
-            print('Have you understood the rules? (type yes when ready)')
+            print("at the end of the 10th round.\n")
+            print('All good? Are you ready to continue? (type yes when ready)')
             player_input()
             break
 
@@ -185,10 +185,9 @@ def select_row():
     row = random.choice(list(data))
     MYSTERY_SENTENCE = row[0].lower()
     print(f"Let's reveal the mystery sentence for round {ROUND}!!\n")
-    print(f"{PLAYER[0]}, {PLAYER[1]}, the mystery sentence is")
-    print(f"in the '{row[4]}' category,\n")
+    print(f"The mystery sentence is in the '{row[4]}' category\n")
     print(f"and it contains {row[1]} words and {row[2]} letters.\n")
-    print("Take it away!")
+    print("GOOD LUCK!")
     return MYSTERY_SENTENCE
 
 
@@ -223,20 +222,20 @@ def turn_wheel():
 
     if CASH == "Bankrupt":
         if ROUND_BANK[TURN % 2] == 0:
-            print("It fell on bankrupt.")
+            print("It fell on Bankrupt.")
             print(f"Well, it is not really a loss {player_turn()}.")
             print("You did not have any money in the bank.")
-            print("Nevertheless you lose you turn.")
+            print("Nevertheless you lose your turn.")
 
         elif ROUND_BANK[TURN % 2] < 2000:
-            print("It fell on bankrupt.")
+            print("It fell on Bankrupt.")
             print(f"You lose {ROUND_BANK[TURN % 2]}$ {player_turn()}.")
             print("It's tough but I believe in you.")
             print("It's your oppopent's turn now.")
 
         elif ROUND_BANK[TURN % 2] < 4000:
-            print("OH NOOOOO!")
-            print(f"{ROUND_BANK[TURN % 2]}$ {player_turn()}.... gone.")
+            print("OH NOOOOO! it is Bankrupt...")
+            print(f"{ROUND_BANK[TURN % 2]}$.... gone.")
             print("I feel for you, really I do. It is not the end yet but...")
             print("your oppopent has the hand now.")
         else:
@@ -374,7 +373,7 @@ def compare_print():
         hidden_list[index] = GUESS
         HIDE_SENTENCE = "".join(hidden_list)
     print("* "*20)
-    print(f"\n{HIDE_SENTENCE}\n")
+    print(f"{HIDE_SENTENCE}\n")
     print("* "*20)
 
     letter_count = MYSTERY_SENTENCE.count(GUESS)
@@ -471,7 +470,7 @@ def winning_round():
             + int(ROUND_BANK[TURN % 2])
 
     else:
-        print("You have won a 1000$ in this round\n")
+        print("You have won 1000$ in this round\n")
         PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) + 1000
 
     print("This money is now yours and it cannot be taken away.\n")
@@ -482,6 +481,7 @@ def winning_round():
 
     if int(PLAYER_BANK[0]) == int(PLAYER_BANK[1]):
         print("Ladies and gentlemen, the game is tied.")
+        print("What a duel!")
         print("Now that's what I call entertainment!")
 
     elif int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):
@@ -490,13 +490,15 @@ def winning_round():
 
     else:
         print(f"{PLAYER[0]}, do not give up!!!")
-        print("The next round has your name witten all over it!\n")
+        print("The next round has your name written all over it!\n")
 
     ROUND += 1
+
     print("\n")
     print(f"\nIt is now time to move onto Round {ROUND}!!!\n")
     print("Dear contestants your earnings for the round")
     print("are obviously reset to 0.\n")
+
     ROUND_BANK = [0, 0]
     guessed_letters.clear()
     convert_letter(select_row())
@@ -518,6 +520,7 @@ def buy_vowel():
         guess_sentence()
 
     ROUND_BANK[TURN % 2] = int(ROUND_BANK[TURN % 2]) - 250
+
     print(f"\n{player_turn()}, you chose to buy a vowel.")
     print(f"You have now have {ROUND_BANK[TURN % 2]}$ in the bank.\n")
     print("What is your vowel?")
@@ -556,10 +559,12 @@ def buy_vowel():
     for index in indices:
         hidden_list[index] = GUESS
         HIDE_SENTENCE = "".join(hidden_list)
+
     print(HIDE_SENTENCE)
 
-    letter_count = MYSTERY_SENTENCE.count(GUESS)
     print("\nCongratulations")
+
+    letter_count = MYSTERY_SENTENCE.count(GUESS)    
     if letter_count == 1:
         print(f"{GUESS.upper()} is found once in the mystery sentence")
 
@@ -597,6 +602,31 @@ def buy_vowel():
 
         else:
             print("wrong answer. a, b or c?")
+
+
+def game_over():
+    print("AND THIS IS IT!!!!")
+    if int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):
+        print(f"{PLAYER[0]}")
+        print("YOU... ARE... THE... WINNER!!!!")
+        print(f"You have successfuly saved {PLAYER_BANK[0]}$")
+
+    else:
+        print(f"{PLAYER[1]}")
+        print("YOU... ARE... THE... WINNer!!!!")
+        print(f"You have successfuly saved {PLAYER_BANK[1]}$")
+
+    print("Throughout the Rounds")
+    print("\nThe competition was fierce and you both have been")
+    print("amazing contestants.")
+    print("Thank you sooo very much!\n ")
+    print("But alas! All good things must end.")
+    print("And this is our time to say good bye.\n")
+    print("BUT FEAR NOT! We will be back soon.")
+    print("Ladies and gentlemen!")
+    print("My name is Mr Boty and I will welcome you next time")
+    print("to once more turn the....")
+    print("WHELL... OF.... FORTUUUUUNE!!!!")
 
 
 def main():
