@@ -1,31 +1,137 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Whee-Of-Fortune
+![Abyss diving club on devices](assets/readme-files/wheel-of-fortune.PNG)
 
-Welcome LudovicLeGuen,
+[Click here to access live project](https://the-wheel-of-fortune.herokuapp.com/)
+## Table of contents
+1. [Introduction](#Introduction)
+2. [UX](#UX)
+    1. [Ideal User Demographic](#Ideal-User-Demographic)
+    2. [User Stories](#User-Stories)
+    3. [Development Planes](#Development-Planes)
+    4. [Design](#Design)
+3. [Features](#Features)
+    1. [Design Features](#Design-Features) 
+    2. [Existing Features](#Existing-Features)
+    3. [Features to Implement in the future](#Features-to-Implement-in-the-future)
+4. [Issues and Bugs](#Issues-and-Bugs)
+5. [Technologies Used](#Technologies-Used)
+     1. [Main Languages Used](#Main-Languages-Used)
+     3. [Frameworks, Libraries & Programs Used](#Frameworks,-Libraries-&-Programs-Used)
+6. [Testing](#Testing)
+     1. [Testing.md](TESTING.md)
+7. [Deployment](#Deployment)
+     1. [Deploying on GitHub Pages](#Deploying-on-GitHub-Pages)
+8. [Credits](#Credits)
+     1. [Media](#Media)
+     2. [Code](#Code)
+9. [Acknowledgements](#Acknowledgements)
+***
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **August 17, 2021**
+## Introduction
 
-## Reminders
 
-* Your code must be placed in the `run.py` file
-* Your dependencies must be placed in the `requirements.txt` file
-* Do not edit any of the other files or your code may not deploy properly
+[Back to top ⇧](#Wheel-Of-Fortune)
 
-## Creating the Heroku app
+## UX
+### Ideal User Demographic
 
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
 
-1. `heroku/python`
-2. `heroku/nodejs`
+### User-Stories
+#### Frequent User Goals
 
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
 
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
+#### New User Goals
 
-Connect your GitHub repository and deploy as normal.
 
-## Constraints
+[Back to top ⇧](#Wheel-Of-Fortune)
 
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
+### Development-Planes
 
------
-Happy coding!
+
+#### Strategy
+The game will focus on the following target audience
+* Audience
+    * 
+    
+* Demographic
+    *
+    
+* Psycho Characteristics
+    * 
+
+The Users must find these informations:
+    * 
+    
+The Administrator has to receive thiese information:
+    * The name of the players
+    * The number of rounds to be played
+    
+#### Scope
+
+Now that we have established the goals of the game we can deduce the necessary features:
+* Required functionality
+    * 
+
+[Back to top ⇧](#Wheel-Of-Fortune)
+
+### Design
+
+[Back to top ⇧](#Wheel-Of-Fortune)
+
+## Features
+### Existing Features
+- **Player names** - 
+
+[Back to top ⇧](#Wheel-Of-Fortune)
+
+### Features to Implement in the future
+* More players
+     Only 2 players can play now but the real show has 3. a feature to ask how many people can play would be fun.
+* Special price and special wheel value
+     Special prize such as trips or cars at certain rounds just like in the real game. 
+
+[Back to top ⇧](#Wheel-Of-Fortune)
+
+## Issues and Bugs 
+Several issues were encountered during developpement but the most troublesome are listed below.
+
+* Checkboxes in Form
+
+[Back to top ⇧](#Wheel-Of-Fortune)
+
+## Technologies Used
+### Main Languages Used
+* Python3
+### Frameworks, Libraries & Programs Used
+- [Heroku](https://heroku.com/ "Link to Heroku") was used to deploy the game.
+- [GitPod](https://gitpod.io/ "Link to GitPod homepage") was used for writing, commiting, and pushing code.
+- [GitHub](https://github.com/ "Link to GitHub")
+- [Am I Responsive?](http://ami.responsivedesign.is/# "Link to Am I Responsive Homepage") was used to verify responsiveness and to create the top picture of this README.md
+
+[Back to top ⇧](#Wheel-Of-Fortune)
+
+## Testing
+Refer to this [page](TESTING.md) please
+
+## Deployment
+The site was developped on Gitpod, commiting and pushing to github.
+
+### Deploying on Heroku
+
+    
+[Back to top ⇧](#Wheel-Of-Fortune)
+
+## Credits 
+### Code 
+The developer has consulted countless times Stack Overflow and W3Schools in ordeer to build the game.
+[Back to top ⇧](#Wheel-Of-Fortune)
+
+## Acknowledgements
+I would like to thank:
+* My wife  for her patience and her kind words when I was in doubt.
+* my mentor, Seun, for her counseling and her contagious enthusiasm and love for coding.
+* my fellow coding students of Code institue who have been invaluable on Slack.
+
+[Back to top ⇧](#Wheel-Of-Fortune)
+
+***

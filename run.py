@@ -139,7 +139,7 @@ def rules():
             print("Fantastic. I see that we have 2 experts today.")
             print("It is going to be reaaaaaally fun!!\n")
             print("Ladies and Gentlemen. Without further ado.\n")
-            print("LET'S PLAY THE WHEEL ... OF ...  FORTUUUUUNNE!\nr")
+            print("LET'S PLAY THE WHEEL ... OF ...  FORTUUUUUNNE!\n")
             break
 
         elif (user_input != "no" and user_input != "yes"):
