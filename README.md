@@ -28,41 +28,63 @@
 ***
 
 ## Introduction
+The wheel of Fortune game is the 3rd Portfolio Project of Code institute.  The developper has chosen this theme because it is a game that everybody knows or at least has heard of and because the rules are pretty universaly understood.
 
+The requirement of this project is simple:
+* "build a command-line application that allows the user to manage a common dataset about a particular domain".
 
 [Back to top ⇧](#Wheel-Of-Fortune)
 
 ## UX
 ### Ideal User Demographic
-
+There are two types of ideal users:
+* Frequent user
+* New user
 
 ### User-Stories
 #### Frequent User Goals
-
+* As a frequent user, I want a game that resembles the original wheel of fortune in game play.
+* As a frequent user, I want a challenging game.
+* As a frequent user, I want to have new experiences and discover new things when playing.
 
 #### New User Goals
-
+* As a new user, I want the commands to be clear.
+* As a new user, I want to understand the rules.
+* As a new user, I want a fun experience.
 
 [Back to top ⇧](#Wheel-Of-Fortune)
 
 ### Development-Planes
-
+To build a command-line application that answer all aforementionned needs.
 
 #### Strategy
 The game will focus on the following target audience
 * Audience
-    * 
+    * New Users
+    * Experienced players
     
 * Demographic
-    *
+    * All ages
     
 * Psycho Characteristics
-    * 
+    * Curious
+    * Determined
+    * Puzzle solver
+    * competitor
 
-The Users must find these informations:
-    * 
+All Users must be able to:
+* Play the wheel of fortune
+* Insert a player name
+* Read the rules
+* Choose the number of round
+* Restart a game at will
+* Know who is winning
+* Play each round with a random sentence to guess 
+* Choose whether they want to guess a consonant, a vowel or the sentence itself
+* See the results of their guesses
+* And, certainly the most iconic move of the original, being able to turn the wheel of fortune itself
     
-The Administrator has to receive thiese information:
+The Administrator has to receive these information:
     * The name of the players
     * The number of rounds to be played
     
@@ -70,17 +92,37 @@ The Administrator has to receive thiese information:
 
 Now that we have established the goals of the game we can deduce the necessary features:
 * Required functionality
-    * 
+    * Name input
+    * Number of round imput
+    * A random sentence creator
+    * A score board
+    * A function to choose between consonant and vowels
+    * A function to guess the sentence
+    * Turning the wheel
+    * Calculating the rewards
+    * Printing the players guesses
 
 [Back to top ⇧](#Wheel-Of-Fortune)
 
 ### Design
+The design of a command line application is by nature pretty basic, but the developper has decided to highlight the sentence during the game since it is the mot important factor for the player.
+The sentence is therefore "wrapped" between two lines made of the * characters and spaces.
 
+Moreover, the devlopper has decided to isert a printing effect to add a feeling of continuity to the game. This effect gives the player the sensation to be in a narrated game.
+
+The developper has also decided to add a Game Host in the person of Mr Boty to even more emulate the TV game. 
 [Back to top ⇧](#Wheel-Of-Fortune)
 
 ## Features
 ### Existing Features
-- **Player names** - 
+- **Player names input** - 
+- **Number of round imput** - 
+- **Score board** - 
+- **Choose between consonant and vowels** - 
+- **Guessing the sentence** - 
+- **Turning the wheel** - 
+- **Calculating the rewards** - 
+- **Printing the players guesses** - 
 
 [Back to top ⇧](#Wheel-Of-Fortune)
 
