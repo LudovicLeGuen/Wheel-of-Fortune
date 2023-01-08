@@ -1,4 +1,4 @@
-# Whee-Of-Fortune
+# Wheel-Of-Fortune
 ![Abyss diving club on devices](assets/readme-files/wheel-of-fortune.PNG)
 
 [Click here to access live project](https://the-wheel-of-fortune.herokuapp.com/)
@@ -43,7 +43,7 @@ There are two types of ideal users:
 
 ### User-Stories
 #### Frequent User Goals
-* As a frequent user, I want a game that resembles the original wheel of fortune in game play.
+* As a frequent user, I want a game that resembles the original wheel of fortune game play.
 * As a frequent user, I want a challenging game.
 * As a frequent user, I want to have new experiences and discover new things when playing.
 
@@ -108,7 +108,7 @@ Now that we have established the goals of the game we can deduce the necessary f
 The design of a command line application is by nature pretty basic, but the developper has decided to highlight the sentence during the game since it is the mot important factor for the player.
 The sentence is therefore "wrapped" between two lines made of the * characters and spaces.
 
-Moreover, the devlopper has decided to isert a printing effect to add a feeling of continuity to the game. This effect gives the player the sensation to be in a narrated game.
+Moreover, the devlopper has decided to insert a printing effect to add a feeling of continuity to the game. This effect gives the player the sensation to be in a narrated game.
 
 The developper has also decided to add a Game Host in the person of Mr Boty to even more emulate the TV game. 
 [Back to top ⇧](#Wheel-Of-Fortune)
@@ -137,7 +137,12 @@ The developper has also decided to add a Game Host in the person of Mr Boty to e
 ## Issues and Bugs 
 Several issues were encountered during developpement but the most troublesome are listed below.
 
-* Checkboxes in Form
+**Bankrupt would reset the player overall gains instead of the player round earnings** The issues was easily fixed. The developper had used the wrong variable. Instead of coding ROUND_BANK[TURN % 2] = 0, the developer made a mistake and wrote PLAYER_BANK[TURN % 2] = 0
+
+**The number of round question** popped several times thus asking how many rounds the players wanted. The developper made a mistake and instead of using the variable name in several literal string, he used the function itself.
+
+### Unfixed Bugs 
+There are no more bug known by the developper 
 
 [Back to top ⇧](#Wheel-Of-Fortune)
 

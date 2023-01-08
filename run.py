@@ -292,7 +292,7 @@ def turn_wheel():
             print("That is really unlucky ... reaaaally unlucky")
             print("Do not forget that you pass your turn too.")
 
-        ROUND_BANK[TURN % 2] = 0  # The player lost the round earnings so far.
+        ROUND_BANK[TURN % 2] = 0  # The player loses the round earnings.
         TURN += 1
         turn_wheel()
 
