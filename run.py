@@ -50,7 +50,7 @@ def print(s):
     for letters in s + '\n':
         sys.stdout.write(letters)
         sys.stdout.flush()
-        time.sleep(1./50)
+        time.sleep(1./30)
 
 
 def player_turn():
@@ -173,7 +173,7 @@ def rules():
             print("- The loser loses the round money.")
             print("- Note that the winners will win 1000$ minimum even if")
             print("  they have less at the end of the round.")
-            print("- The last round money prize will mulptiplied by 3.")
+            print("- The last round money prize will be mulptiplied by 3.")
             print("- The winner is the player with the most money")
             print("  at the end of all rounds.\n")
             print('All good? Are you ready to continue? (type yes when ready)')
@@ -586,8 +586,6 @@ def buy_vowel():
     if int(ROUND_BANK[TURN % 2]) < 250:
         print(f"I apologize {player_turn()} but you do not")
         print("have enough money to buy a vowel.")
-        print("You have no other choice than guessing the sentence")
-        guess_sentence()
 
     ROUND_BANK[TURN % 2] = int(ROUND_BANK[TURN % 2]) - 250
 
