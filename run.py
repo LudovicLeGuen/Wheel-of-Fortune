@@ -1,9 +1,8 @@
 """
 The Wheel or fortune game.
-
-
+"""
 import sys
-import time"""
+import time
 import random
 import gspread
 from google.oauth2.service_account import Credentials
@@ -18,17 +17,17 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('wheel-of-fortune')
 
-PLAYER = ["", ""]
-PLAYER_BANK = [0, 0]
-ROUND_BANK = [0, 0]
-CASH = 0
-ROUND = 1
-NUM_ROUND = 0
-TURN = 0
-guessed_letters = []
-GUESS = ""
-MYSTERY_SENTENCE = ""
-HIDE_SENTENCE = ""
+PLAYER = ["", ""]  # stores the 2 players name.
+PLAYER_BANK = [0, 0]  # stores the money won by each player
+ROUND_BANK = [0, 0]  # stores the money earned during the round
+CASH = 0  # stores the value given randomly byt the wheel
+ROUND = 1  # determines the round played
+NUM_ROUND = 0  # stores the number of rounds chosen by players
+TURN = 0  # goes up +1 each time a player passes its turn
+guessed_letters = []  # stores all letters guessed during the round
+GUESS = ""  # the player consonnant or vowel guess.
+MYSTERY_SENTENCE = ""  # Stores the mystery sentence of each round
+HIDE_SENTENCE = ""  # stores the mystery sentence with underscores.
 VOWELS = ["a", "e", "i", "o", "u"]
 CONSONANT = ["b", "c", "d", "f", "g", "h", "j", "k", "l",
              "m", "n", "p", "q", "r", "s", "t", "v", "w",
@@ -37,26 +36,28 @@ CONSONANT = ["b", "c", "d", "f", "g", "h", "j", "k", "l",
 WHEEL = ["Bankrupt", 600, 400, 300, "Pass your turn",
          800, 350, 450, 700, 300, 600, "Bankrupt", 600, 500, 300, 500,
          800, 550, 400, 300, 900, 500, 300, 900]
+# just like the actual game, the wheel has 24 values.
 
 title = SHEET.worksheet('title')
 data = title.get_all_values()
+# gets the mystery sentences stored in a google sheet.
 
-"""
+
 def print(s):
-
+    """
     Used to add a typing effect when printing on the terminal
-
+    """
     for letters in s + '\n':
         sys.stdout.write(letters)
         sys.stdout.flush()
-        time.sleep(1./25)"""
+        time.sleep(1./50)
 
 
 def player_turn():
     """
     This function defines the player who will play
-    the turn by populating the PLAYER variable index with
-    a 0 or a 1 thanks to the modulo.
+    the turn by populating the PLAYER global variable index
+    with a 0 or a 1 thanks to the modulo.
     PLAYER[0]= player 1, PLAYER[1] = player 2
     """
     return PLAYER[TURN % 2]
@@ -73,21 +74,21 @@ def play_game():
     print("Contestant 1. What is your name please?")
     while True:
         PLAYER[0] = (input("-> \n"))
-        if len(PLAYER[0]) == 0:
+        if len(PLAYER[0]) == 0:  # obligation to insert at least 1 character.
             print("Don't be shy. I know I am intimidating but please")
             print("name yourself so the audience can recognize you.")
 
-        elif len(PLAYER[0]) > 10:
+        elif len(PLAYER[0]) > 15:  # 15 characters max.
             print("WOW, I will never remember such a long name.\n")
             print("Do you have a nickname I would rather use?")
 
-        else:
+        else:  # Players can put any type of character they want.
             print(f"Welcome and good luck {PLAYER[0]} \n")
             break
 
     print("Contestant 2. What is your name please?")
     while True:
-        PLAYER[1] = (input("-> \n"))
+        PLAYER[1] = (input("-> \n"))  # Copies player 1 process
         if len(PLAYER[1]) == 0:
             print("Don't be shy. I know I am intimidating but please")
             print("name yourself so the audience can recognize you.")
@@ -138,7 +139,7 @@ def rules():
             print("Fantastic. I see that we have 2 experts today.")
             print("It is going to be reaaaaaally fun!!\n")
             print("Ladies and Gentlemen. Without further ado.\n")
-            print("LET'S PLAY THE WHEEL ... OF ...  FORTUUUUUNNE!")
+            print("LET'S PLAY THE WHEEL ... OF ...  FORTUUUUUNNE!\nr")
             break
 
         elif (user_input != "no" and user_input != "yes"):
@@ -205,10 +206,13 @@ def select_row():
     to guess in the turn.
     """
     global MYSTERY_SENTENCE, TURN
+    # Switches players who start the round. Player1 starts round 1
     TURN = int(ROUND) - 1
     row = random.choice(list(data))
     MYSTERY_SENTENCE = row[0].lower()
 
+    # Each round starts here so the scenario switches if we play the last
+    # round with the x3 gain multiplicator.
     if int(ROUND) == int(NUM_ROUND):
         print("Dear contestants, this is the final Round.")
         print("As you probably already know, the winner's gains")
@@ -249,7 +253,8 @@ def convert_letter(MYSTERY_SENTENCE):
 
 def turn_wheel():
     """
-    The function gets the cash value from the wheel list.
+    The function gets a random value from the wheel list and stores
+    it in the CASH global variabe.
     """
     global CASH, TURN
 
@@ -259,6 +264,8 @@ def turn_wheel():
     CASH = random.choice(WHEEL)
 
     if CASH == "Bankrupt":
+        # the modulo defines the index of the ROUND_BANK variable and therefore
+        # defines the player earnings
         if ROUND_BANK[TURN % 2] == 0:
             print("It fell on Bankrupt.")
             print(f"Well, it is not really a loss {player_turn()}.")
@@ -276,6 +283,7 @@ def turn_wheel():
             print(f"{ROUND_BANK[TURN % 2]}$.... gone.")
             print("I feel for you, really I do. It is not the end yet but...")
             print("your oppopent has the hand now.")
+
         else:
             print("NOOOOOOO, BANKRUPT!!!!")
             print("OOOOOH lordy lord... I am speechless.")
@@ -284,7 +292,7 @@ def turn_wheel():
             print("That is really unlucky ... reaaaally unlucky")
             print("Do not forget that you pass your turn too.")
 
-        PLAYER_BANK[TURN % 2] = 0
+        ROUND_BANK[TURN % 2] = 0  # The player lost the round earnings so far.
         TURN += 1
         turn_wheel()
 
@@ -303,19 +311,17 @@ def turn_wheel():
 
 def check_consonant():
     """
-    The function checks if there are still some remaning
-    consonants to be found in the mystery sentence. If no
-    consonants remains to be found, the no_consonant function
-    is called, otherwise, the function is passed.
+    The function checks if there are still some remaining
+    consonants to be found in the mystery sentence. If all
+    consonants were already found, the no_consonant function
+    is called, otherwise the games continues with the function
+    player_guess.
     """
     with_vowel = ""
     for char in MYSTERY_SENTENCE:
-        # ord(chr) returns the ascii value
-        # CHECKING FOR UPPER CASE
         if ord(char) >= 65 and ord(char) <= 90:
             with_vowel += char
 
-            # checking for lower case
         elif ord(char) >= 97 and ord(char) <= 122:
             with_vowel += char
 
@@ -370,7 +376,7 @@ def player_guess():
     while True:
         GUESS = input("-> \n")
 
-        if len(GUESS) != 1:
+        if len(GUESS) != 1:  # 1 letter only necessary
             print(f"Sorry {player_turn()} we need only one letter.")
             print("Please guess a single consonant.\n")
             continue
@@ -414,6 +420,7 @@ def compare_print():
     print(f"{HIDE_SENTENCE}\n")
     print("* "*20)
 
+    # gives the number of letter on the mystery sentence
     letter_count = MYSTERY_SENTENCE.count(GUESS)
 
     if letter_count == 1:
@@ -431,11 +438,16 @@ def compare_print():
         print(f"{GUESS.upper()} is found {letter_count} times")
         print("in the sentence!")
 
+    # calculates the number of letter found x the wheel value
     price = int(letter_count)*CASH
+    # updates the player earnings
     ROUND_BANK[TURN % 2] = int(price) + int(ROUND_BANK[TURN % 2])
+
     print(f"\n{player_turn()}, you earned {price}$!!!")
     print(f"{PLAYER[0]} = {ROUND_BANK[0]}$ --- {PLAYER[1]} = {ROUND_BANK[1]}$")
+
     check_consonant()
+
     print(f"{player_turn()} you guessed a correct consonant.")
     print("what is your next move please?")
     print("  a - buy a vowel for 250$")
@@ -464,8 +476,8 @@ def guess_sentence():
     """
     The function allows the player to guess directly
     the sentence for a chance to win the round.
-    If the answer is wrong the second player can play.
-    if the answer is correct the winning_guess function is called
+    If the answer is wrong the second player takes the trun.
+    If the answer is correct the winning_guess function is called
     """
     global TURN
     print("\n")
@@ -491,8 +503,8 @@ def guess_sentence():
 def winning_round():
     """
     The function gives the money to the winning player,
-    reset the round bank accounts,
-    empty the guessed letters,
+    reset the player earnings to 0,
+    empties the guessed letters variable,
     goes 1 round up and calls the convert_letter function
     to start a new mystery sentence.
     """
@@ -531,7 +543,7 @@ def winning_round():
     print("This money is now yours and it cannot be taken away.\n")
     print("You deserve it!\n")
 
-    if int(ROUND) == int(NUM_ROUND):
+    if int(ROUND) == int(NUM_ROUND):  # If this is the last round
         game_over()
 
     print("Let's recapitulate the gains:")
@@ -557,9 +569,9 @@ def winning_round():
     print("Dear contestants your earnings for the round")
     print("are obviously reset to 0.\n")
 
-    ROUND_BANK = [0, 0]
-    guessed_letters.clear()
-    convert_letter(select_row())
+    ROUND_BANK = [0, 0]  # players earnings reset
+    guessed_letters.clear()  # guessels letters reset
+    convert_letter(select_row())  # starts the new round
 
 
 def buy_vowel():
@@ -620,10 +632,9 @@ def buy_vowel():
 
     print(HIDE_SENTENCE)
 
-    print("\nCongratulations")
-
     letter_count = MYSTERY_SENTENCE.count(GUESS)
     if letter_count == 1:
+        print("\nNot bad!")
         print(f"{GUESS.upper()} is found once in the mystery sentence")
 
     elif letter_count == 0:
@@ -634,6 +645,7 @@ def buy_vowel():
         turn_wheel()
 
     else:
+        print("Very good.")
         print(f"{GUESS.upper()} is found {letter_count} times")
         print("in the sentence!\n")
 
@@ -669,12 +681,12 @@ def game_over():
     host would do.
     """
     print("AND THIS IS IT!!!!")
-    if int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):
+    if int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):  # If player1 wins
         print(f"{PLAYER[0]}")
         print("YOU... ARE... THE... WINNER!!!!")
         print(f"You have successfuly saved {PLAYER_BANK[0]}$")
 
-    else:
+    else:  # If player2 wins
         print(f"{PLAYER[1]}")
         print("YOU... ARE... THE... WINNER!!!!")
         print(f"You have successfuly saved {PLAYER_BANK[1]}$")
@@ -691,7 +703,7 @@ def game_over():
     print("to once more turn the....")
     print("WHEEL... OF.... FORTUUUUUNE!!!!")
 
-    exit()
+    exit()  # end of the game.
 
 
 def main():
