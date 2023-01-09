@@ -43,11 +43,11 @@ data = title.get_all_values()
 # gets the mystery sentences stored in a google sheet.
 
 
-def print(s):
+def print(script):
     """
     Used to add a typing effect when printing on the terminal
     """
-    for letters in s + '\n':
+    for letters in script + '\n':
         sys.stdout.write(letters)
         sys.stdout.flush()
         time.sleep(1./30)
@@ -134,7 +134,7 @@ def rules():
     """
 
     while True:
-        user_input = input("yes or no? -> \n")
+        user_input = input("yes or no? -> \n").lower()
         if user_input == "no":
             print("Fantastic. I see that we have 2 experts today.")
             print("It is going to be reaaaaaally fun!!\n")
@@ -185,9 +185,8 @@ def player_input():
     """
     Functions registers the player answer to continue playing or not
     """
-    user_input = ''
     while True:
-        user_input = input("-> \n")
+        user_input = input("-> \n").lower()
 
         if user_input.lower() != 'yes':
             print("It's ok. We have all the time in the world")
@@ -348,11 +347,18 @@ def no_consonant():
     anymore.
     """
     print(f"{player_turn()} NO MORE CONSONANT IN THE MYSTERY SENTENCE!")
+
+    if int(ROUND_BANK[TURN % 2]) < 250:
+        print(f"{player_turn()} you do not have enough money in the bank")
+        print("to buy a vowel.")
+        print("You have no other choice than guessing the sentence.")
+        guess_sentence()
+
     print("You can only")
     print("  a - buy a vowel for 250$ or")
     print("  b - guess the mystery sentence")
     while True:
-        user_input = input("a or b? -> \n")
+        user_input = input("a or b? -> \n").lower()
         if user_input == "a":
             buy_vowel()
             break
@@ -374,7 +380,7 @@ def player_guess():
     print(f"\n{player_turn()}, what consonant do you choose for {CASH}$?")
     global GUESS, TURN
     while True:
-        GUESS = input("-> \n")
+        GUESS = input("-> \n").lower()
 
         if len(GUESS) != 1:  # 1 letter only necessary
             print(f"Sorry {player_turn()} we need only one letter.")
@@ -455,7 +461,7 @@ def compare_print():
     print("  c - guess the mystery sentence")
 
     while True:
-        user_input = input("a, b or c? -> \n")
+        user_input = input("a, b or c? -> \n").lower()
         if user_input == "a":
             buy_vowel()
             break
@@ -480,12 +486,9 @@ def guess_sentence():
     If the answer is correct the winning_guess function is called
     """
     global TURN
-    print("\n")
-    print(f"Very well {player_turn()}.")
-    print("Be sure to insert all your letters in lowercase")
-    print("For example -> i love jamaica")
-    print("Good Luck")
-    user_input = input("-> \n")
+    print(f"\nVery well {player_turn()}.")
+    print("What do you think the sentence is?")
+    user_input = input("-> \n").lower()
 
     if user_input == MYSTERY_SENTENCE:
         winning_round()
@@ -583,10 +586,6 @@ def buy_vowel():
 
     global GUESS, HIDE_SENTENCE, TURN
 
-    if int(ROUND_BANK[TURN % 2]) < 250:
-        print(f"I apologize {player_turn()} but you do not")
-        print("have enough money to buy a vowel.")
-
     ROUND_BANK[TURN % 2] = int(ROUND_BANK[TURN % 2]) - 250
 
     print(f"\n{player_turn()}, you chose to buy a vowel.")
@@ -594,7 +593,7 @@ def buy_vowel():
     print("What is your vowel?")
 
     while True:
-        GUESS = input("-> \n")
+        GUESS = input("-> \n").lower()
         if len(GUESS) != 1:
             print(f"Sorry {player_turn()} we need a single letter.")
             print("Please insert a single vowel\n")
@@ -628,7 +627,9 @@ def buy_vowel():
         hidden_list[index] = GUESS
         HIDE_SENTENCE = "".join(hidden_list)
 
-    print(HIDE_SENTENCE)
+    print("* "*20)
+    print(f"{HIDE_SENTENCE}\n")
+    print("* "*20)
 
     letter_count = MYSTERY_SENTENCE.count(GUESS)
     if letter_count == 1:
@@ -649,13 +650,31 @@ def buy_vowel():
 
     check_consonant()
 
+    if int(ROUND_BANK[TURN % 2]) < 250:
+        print(f"I apologize {player_turn()} but you do not")
+        print("have enough money to buy a vowel.")
+        print("  a - turn the wheel and find a new consonant")
+        print("  b - guess the mystery sentence")
+        while True:
+            user_input = input("-> \n").lower()
+            if user_input == "a":
+                turn_wheel()
+                break
+
+            elif user_input == "b":
+                guess_sentence()
+                break
+
+            else:
+                print("wrong answer. a or b?")
+
     print(f"{player_turn()} you guessed a correct vowel.")
     print("what is your next move please?")
     print("  a - buy another vowel for 250$")
     print("  b - turn the wheel and find a new consonant")
     print("  c - guess the mystery sentence")
     while True:
-        user_input = input("-> \n")
+        user_input = input("-> \n").lower()
         if user_input == "a":
             buy_vowel()
             break
