@@ -164,8 +164,31 @@ Refer to this [page](TESTING.md) please
 The site was developped on Gitpod, commiting and pushing to github.
 
 ### Deploying on Heroku
+Deploying on Heroky required the following:
 
-    
+* Type "pip freeze > requirements.txt" in your Github terminal to update the requirements.txt file with the list of dependencies used in the project . Save, commit and push.
+
+* Create an Heroku account, select Python as the 'Primary development language'.
+
+* Open the email sent to your address and click the link to verify your email address. Follow the instructions to create a password and log in.
+
+* Click the 'create new app' button on the dashboard. Name your app, select your region and click 'Create App'
+
+* In the "Settings" tab, add both the python and node.js build packs.
+
+* Create a "Config VAR" named 'CREDS' KEY and copy/paste the creds.json file in it.
+
+* Create another "Config VAR" called PORT as the KEY with 8000 as VALUE.
+
+* In the "Deploy" tab, choose GitHub as a deployment method.
+
+* Search for the wanted repository.
+
+* Click on "enable automatic deploys" and then deploy branch.
+
+* once the app built (a minute or two needed)click "View" to access the site.
+
+   
 [Back to top ⇧](#Wheel-Of-Fortune)
 
 ## Credits 

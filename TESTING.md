@@ -27,12 +27,12 @@
      * The randomness of the wheel can sometimes flip the situation and make a winner a loser.
      
 * As a frequent user, I want to have new experiences and discover new things when playing.
-     * There are morethan 800 sentences to play with. 
+     * There are more almost 1000 sentences to play with. 
      * Mr Boty has different interactions with the players according to the situation.
 
 #### New User Goals:
 * As a new user, I want the commands to be clear.
-     * Each necessary action for the player is clearly described by the system. If and entry is wrong, the game tells it. 
+     * Each necessary action for the player is clearly described by the system. If an entry is wrong, the game tells it. 
      * The players always see the most important features.
 
 * As a new user, I want to understand the rules.
@@ -71,8 +71,9 @@
 
      ![Cash Value](assets/testing-files/value.png)
 
-* Passing turn
+* Pass your turn
 
+     ![Cash Value](assets/testing-files/pass.png)
 
 * Bankrupt
 
@@ -84,7 +85,15 @@
 
 * Verify the consonant
 
+     ![Consonant](assets/testing-files/verification.png) 
+
 * Consonant already guessed
+
+     ![Consonant](assets/testing-files/guessed.png) 
+
+* No more consonant to chose
+
+     ![No more consonant](assets/testing-files/no-consonant.png)
 
 * Print consonant
 
@@ -109,19 +118,23 @@
 
 * guess sentence
 
-     ![Cannot buy Vowel](assets/testing-files/not-enough.png)
+     ![Guess sentence](assets/testing-files/not-enough.png)
 
 * Winning round
 
-* Calculate round money
+     ![Winning a round](assets/testing-files/winning-round.png)
 
 * Last round
 
+     ![Last round](assets/testing-files/final-round.png)
+
 * Winning Game
 
+     ![Winning the game](assets/testing-files/money-winning.png) 
+     ![Winning the game](assets/testing-files/end.png)
 
+[Back to top](#Wheel-Of-Fortune---Testing)
 
-     ![Inserting Names](assets/testing-files/pre-game.png) 
 ## Automated Testing
 ### Code Validation
 * PEP8 CI Python Linter 
@@ -133,6 +146,7 @@
 ## User testing 
 Special thanks to the following who tested and gave me their feedback and ideas to improve the game:
 * My wife Domnika 
+* Ed bradley, as usual
 * My Mentor Koko The champion of the wheel of fortune. Really lads she is unbeatable.....
 
 ***
