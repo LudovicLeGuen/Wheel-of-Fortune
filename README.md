@@ -102,6 +102,24 @@ Now that we have established the goals of the game we can deduce the necessary f
     * Calculating the rewards
     * Printing the players guesses
 
+#### Scope
+A flowchart was created in [LUCID](https://lucid.app.com/ "Link to Lucid") to illustrate the logic of the game.
+
+<details>
+<summary>Pre game flowchart</summary>
+    
+![Pre Game](assets/readme-files/pre-game.png)
+
+</details> 
+
+<details>
+<summary>Game flowchart</summary>
+
+![Pre Game](assets/readme-files/game.png)
+
+</details> 
+    
+
 [Back to top ⇧](#Wheel-Of-Fortune)
 
 ### Design
@@ -187,13 +205,13 @@ Deploying on Heroky required the following:
 * Click on "enable automatic deploys" and then deploy branch.
 
 * once the app built (a minute or two needed)click "View" to access the site.
-
    
 [Back to top ⇧](#Wheel-Of-Fortune)
 
 ## Credits 
 ### Code 
 The developer has consulted countless times Stack Overflow and W3Schools in ordeer to build the game.
+
 [Back to top ⇧](#Wheel-Of-Fortune)
 
 ## Acknowledgements
