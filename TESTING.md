@@ -46,17 +46,76 @@
 ## Manual Testing
 ### Phase 1 The pre game
 * Inserting players name
+
+     ![Inserting Names](assets/testing-files/user-name.png) 
+
 * Asking for the number of round
 
-     ![Inserting Names](assets/testing-files/pre-game.png) 
+     ![Inserting Names](assets/testing-files/round-input.png)
 
 * Asking for the rules
 
+     ![Rules](assets/testing-files/rules-negative.png)
      ![Rules](assets/testing-files/rules.png)
 
 ### Phase 2 The game
-* Inserting players name
-* Asking for the number of round
+* Creating and displaying the Mystery Sentence
+
+     ![Mystery Sentence](assets/testing-files/mystery-sentence.png)
+
+* Turning the wheel
+
+     ![Turnning the wheel](assets/testing-files/wheel.png)
+
+* Cash value
+
+     ![Cash Value](assets/testing-files/value.png)
+
+* Passing turn
+
+
+* Bankrupt
+
+     ![Bankrupt](assets/testing-files/bankrupt.png) 
+
+* Inserting a consonant
+
+     ![Consonant](assets/testing-files/consonant-test.png) 
+
+* Verify the consonant
+
+* Consonant already guessed
+
+* Print consonant
+
+     ![Print](assets/testing-files/print.png) 
+
+* Calculate turn earning
+
+     ![Calculate Earnings](assets/testing-files/counts.png) 
+     ![Calculate Earnings](assets/testing-files/results.png)
+
+* 3 choices after correct guess
+
+     ![Print](assets/testing-files/choice.png) 
+
+* buy a vowel
+
+* Remove 250$
+
+* Not enough money to buy Vowel
+
+* guess sentence
+
+* Winning round
+
+* Calculate round money
+
+* Last round
+
+* Winning Game
+
+
 
      ![Inserting Names](assets/testing-files/pre-game.png) 
 ## Automated Testing

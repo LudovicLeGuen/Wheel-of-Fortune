@@ -406,8 +406,8 @@ def no_consonant():
                      attrs=['bold'])
 
     if int(ROUND_BANK[TURN % 2]) < 250:
-        termcolor.cprint(f"\n{player_turn()} you do not have enough money in\
-                         the bank", "red", attrs=['bold'])
+        termcolor.cprint(f"\n{player_turn()} you do not have enough money in"
+                         "the bank", "red", attrs=['bold'])
         termcolor.cprint("to buy a vowel.", "red", attrs=['bold'])
         print("You have no other choice than guessing the sentence.")
         guess_sentence()
@@ -518,7 +518,7 @@ def compare_print():
 
     check_consonant()
 
-    print(f"\n{player_turn()} you guessed a correct consonant.")
+    print(f"{player_turn()} you guessed a correct consonant.")
     print("what is your next move please?")
     print("  a - buy a vowel for 250$")
     print("  b - turn the wheel and guess another consonant")
@@ -663,7 +663,7 @@ def buy_vowel():
     ROUND_BANK[TURN % 2] = int(ROUND_BANK[TURN % 2]) - 250
 
     print(f"\n{player_turn()}, you chose to buy a vowel.")
-    termcolor.cprint(f"You have now have {ROUND_BANK[TURN % 2]}$.\n" "blue",
+    termcolor.cprint(f"You have now {ROUND_BANK[TURN % 2]}$.\n", "blue",
                      attrs=['bold'])
     print("What is your vowel?")
 
@@ -714,8 +714,9 @@ def buy_vowel():
         print(f"{GUESS.upper()} is found once in the mystery sentence")
 
     elif letter_count == 0:
-        print(f"\n{GUESS.upper()} is not in the mystery sentence.")
-        termcolor.cprint(f"{player_turn()}, you pass your turn\n", "magenta",
+        termcolor.cprint(f"\n{GUESS.upper()} is not in the mystery sentence.",
+                         "red", attrs=['bold'])
+        termcolor.cprint(f"{player_turn()}, you pass your turn\n", "red",
                          attrs=['bold'])
         TURN += 1
         check_consonant()
