@@ -349,6 +349,7 @@ def turn_wheel():
 
         ROUND_BANK[TURN % 2] = 0  # The player loses the round earnings.
         TURN += 1
+        score_sentence_print()
         turn_wheel()
 
     elif CASH == "Pass your turn":
@@ -357,6 +358,7 @@ def turn_wheel():
         print("It is now your opponent turn.")
         print("Sorry")
         TURN += 1
+        score_sentence_print()
         turn_wheel()
 
     else:
@@ -588,33 +590,36 @@ def winning_round():
     termcolor.cprint(f"{MYSTERY_SENTENCE.upper()}!!!", "green", attrs=['bold'])
 
     if int(ROUND_BANK[TURN % 2]) > 1000:
-        print(f"You have totalized {ROUND_BANK[TURN % 2]}$ in")
-        print("this round.\n")
+        termcolor.cprint(f"You have totalized {ROUND_BANK[TURN % 2]}$ in",
+                         "blue", attrs=['bold'])
+        termcolor.cprint("this round.\n", "blue", attrs=['bold'])
 
         if int(ROUND) == int(NUM_ROUND):
             print("And since this was the last one")
             print("it is multiplied by 3!\n")
-            print(f"You earned {int(ROUND_BANK[TURN % 2]) * 3}$!")
-            PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2])\
-                + int(ROUND_BANK[TURN % 2])*3
+            termcolor.cprint(f"You earned {int(ROUND_BANK[TURN % 2]) * 3}$!",
+                             "blue", attrs=['bold'])
+            PLAYER_BANK[TURN % 2] = (int(PLAYER_BANK[TURN % 2])
+                                     + int(ROUND_BANK[TURN % 2])*3)
 
         else:
             PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2])\
                 + int(ROUND_BANK[TURN % 2])
 
     else:
-        print("You have won 1000$ in this round\n")
+        termcolor.cprint("You have won 1000$ in this round\n",
+                         "blue", attrs=['bold'])
 
         if int(ROUND) == int(NUM_ROUND):
             print("And since this was the last one")
             print("it is multiplied by 3!\n")
-            print("You earned 3000$!")
+            termcolor.cprint("You earned 3000$!", "blue", attrs=['bold'])
             PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) + 3000
 
         else:
             PLAYER_BANK[TURN % 2] = int(PLAYER_BANK[TURN % 2]) + 1000
 
-    print("This money is now yours and it cannot be taken away.\n")
+    print("This money is now yours and you cannot lose it.\n")
     print("You deserve it!\n")
 
     if int(ROUND) == int(NUM_ROUND):  # If this is the last round
@@ -720,27 +725,32 @@ def buy_vowel():
                          attrs=['bold'])
         TURN += 1
         check_consonant()
+        score_sentence_print()
         turn_wheel()
 
     else:
-        print("\nNice.")
+        termcolor.cprint("\nNice.", "green", attrs=['bold'])
         print(f"{GUESS.upper()} is found {letter_count} times")
         print("in the sentence!\n")
 
     check_consonant()
 
     if int(ROUND_BANK[TURN % 2]) < 250:
-        print(f"I apologize {player_turn()} but you do not")
-        print("have enough money to buy a vowel.")
+        termcolor.cprint(f"I apologize {player_turn()} but you do not", "red",
+                         attrs=['bold'])
+        termcolor.cprint("have enough money to buy a vowel.", "red",
+                         attrs=['bold'])
         print("  a - turn the wheel and find a new consonant")
         print("  b - guess the mystery sentence")
         while True:
             user_input = input("-> \n").lower()
             if user_input == "a":
+                score_sentence_print()
                 turn_wheel()
                 break
 
             elif user_input == "b":
+                score_sentence_print()
                 guess_sentence()
                 break
 
@@ -781,9 +791,13 @@ def game_over():
     the winner is and will conclude the game like a
     host would do.
     """
+    sleep(2)
+    clear()
     print("LADIES AND GENTLEMEN THIS IS IT!!!!")
-    print(f"We went through {num_round()} rounds")
+    print(f"We went through {NUM_ROUND} rounds")
     print(" and after ups and downs the winner is...")
+    sleep(2)
+
     if int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):  # If player1 wins
         termcolor.cprint(f"{PLAYER[0]} with {PLAYER_BANK[0]}$", "green",
                          attrs=['bold'])
@@ -805,10 +819,12 @@ def game_over():
     print("After all we are just one click away.\n")
     print("Ladies and gentlemen!")
     print("My name is Mr Boty and I will welcome you next time")
-    print("to once more turn the WHEEL")
-    sleep(2)
+    print("to once more turn the")
+    sleep(1)
+    print("WHEEL")
+    sleep(1)
     print("OF")
-    sleep(2)
+    sleep(1)
     print("FORTUUUUUNE!!!!")
 
     exit()  # end of the game.

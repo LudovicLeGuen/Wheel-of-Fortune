@@ -97,15 +97,19 @@
 
 * 3 choices after correct guess
 
-     ![Print](assets/testing-files/choice.png) 
+     ![Choices](assets/testing-files/choice.png) 
 
 * buy a vowel
 
-* Remove 250$
+     ![Vowel](assets/testing-files/vowel-money.png)
 
 * Not enough money to buy Vowel
 
+     ![Cannot buy Vowel](assets/testing-files/not-enough.png)
+
 * guess sentence
+
+     ![Cannot buy Vowel](assets/testing-files/not-enough.png)
 
 * Winning round
 
@@ -129,5 +133,6 @@
 ## User testing 
 Special thanks to the following who tested and gave me their feedback and ideas to improve the game:
 * My wife Domnika 
+* My Mentor Koko The champion of the wheel of fortune. Really lads she is unbeatable.....
 
 ***
