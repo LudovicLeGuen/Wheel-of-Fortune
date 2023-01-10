@@ -89,16 +89,16 @@ def score_sentence_print():
     """
     sleep(2)
     clear()
-    termcolor.cprint("- "*25, "cyan")
+    termcolor.cprint("- "*25, "cyan", attrs=['bold'])
     termcolor.cprint(f"Game score  {PLAYER[0]} = {PLAYER_BANK[0]}$ --- "
-                     f"{PLAYER[1]} = {PLAYER_BANK[1]}$", "cyan")
+                     f"{PLAYER[1]} = {PLAYER_BANK[1]}$", "cyan",
+                     attrs=['bold'])
     termcolor.cprint(f"Round score {PLAYER[0]} = {ROUND_BANK[0]}$ --- "
-                     f"{PLAYER[1]} = {ROUND_BANK[1]}$", "cyan")
-    termcolor.cprint("- "*25, "cyan")
-    termcolor.cprint("* "*25, "yellow")
-    print(MYSTERY_SENTENCE)
+                     f"{PLAYER[1]} = {ROUND_BANK[1]}$", "cyan", attrs=['bold'])
+    termcolor.cprint("- "*25, "cyan", attrs=['bold'])
+    termcolor.cprint("* "*25, "yellow", attrs=['bold'])
     termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-    termcolor.cprint("* "*25, "yellow")
+    termcolor.cprint("* "*25, "yellow", attrs=['bold'])
 
 
 def play_game():
@@ -276,9 +276,9 @@ def select_row():
         print(f"Let's reveal the mystery sentence for Round {ROUND}!!\n")
 
     termcolor.cprint(f"The mystery sentence is in the '{row[4]}' category\n",
-                     "yellow")
+                     "yellow", attrs=['bold'])
     termcolor.cprint(f"and it contains {row[1]} words and {row[2]} letters.\n",
-                     "yellow")
+                     "yellow", attrs=['bold'])
 
     return MYSTERY_SENTENCE
 
@@ -297,9 +297,9 @@ def convert_letter(MYSTERY_SENTENCE):
         if ord(MYSTERY_SENTENCE[i]) != 32:
             HIDE_SENTENCE = HIDE_SENTENCE.replace(MYSTERY_SENTENCE[i], '_')
 
-    termcolor.cprint("* "*25, "yellow")
+    termcolor.cprint("* "*25, "yellow", attrs=['bold'])
     termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-    termcolor.cprint("* "*25, "yellow")
+    termcolor.cprint("* "*25, "yellow", attrs=['bold'])
 
     print("\nGOOD LUCK!")
     turn_wheel()
@@ -321,25 +321,26 @@ def turn_wheel():
         # the modulo defines the index of the ROUND_BANK variable and therefore
         # defines the player earnings
         if ROUND_BANK[TURN % 2] == 0:
-            termcolor.cprint("It fell on Bankrupt.", "red")
+            termcolor.cprint("It fell on Bankrupt.", "red", attrs=['bold'])
             print(f"Well, it is not really a loss {player_turn()}.")
             print("You did not have any money in the bank.")
             print("Nevertheless you lose your turn.")
 
         elif ROUND_BANK[TURN % 2] < 2000:
-            termcolor.cprint("It fell on Bankrupt.", "red")
+            termcolor.cprint("It fell on Bankrupt.", "red", attrs=['bold'])
             print(f"You lose {ROUND_BANK[TURN % 2]}$ {player_turn()}.")
             print("It's tough but I believe in you.")
             print("It's your oppopent's turn now.")
 
         elif ROUND_BANK[TURN % 2] < 4000:
-            termcolor.cprint("OH NOOOOO! it is Bankrupt...", "red")
+            termcolor.cprint("OH NOOOOO! it is Bankrupt...", "red",
+                             attrs=['bold'])
             print(f"{ROUND_BANK[TURN % 2]}$.... gone.")
             print("I feel for you, really I do. It is not the end yet but...")
             print("your oppopent has the hand now.")
 
         else:
-            termcolor.cprint("NOOOOOOO, BANKRUPT!!!!", "red")
+            termcolor.cprint("NOOOOOOO, BANKRUPT!!!!", "red", attrs=['bold'])
             print("OOOOOH lordy lord... I am speechless.")
             print(f"You had {ROUND_BANK[TURN % 2]}$ {player_turn()}")
             print(f"{ROUND_BANK[TURN % 2]}$ !!!!!!!!!!!!")
@@ -351,7 +352,8 @@ def turn_wheel():
         turn_wheel()
 
     elif CASH == "Pass your turn":
-        termcolor.cprint(f"\nPASS YOUR TURN!! Too bad {player_turn()}.", "red")
+        termcolor.cprint(f"\nPASS YOUR TURN!! Too bad {player_turn()}.", "red",
+                         attrs=['bold'])
         print("It is now your opponent turn.")
         print("Sorry")
         TURN += 1
@@ -400,12 +402,13 @@ def no_consonant():
     It gives only two choices to play since the user cannot spin the wheel
     anymore.
     """
-    termcolor.cprint("\nNO MORE CONSONANT IN THE MYSTERY SENTENCE!", "magenta")
+    termcolor.cprint("\nNO MORE CONSONANT IN THE MYSTERY SENTENCE!", "magenta",
+                     attrs=['bold'])
 
     if int(ROUND_BANK[TURN % 2]) < 250:
         termcolor.cprint(f"\n{player_turn()} you do not have enough money in\
-                         the bank", "red")
-        termcolor.cprint("to buy a vowel.", "red")
+                         the bank", "red", attrs=['bold'])
+        termcolor.cprint("to buy a vowel.", "red", attrs=['bold'])
         print("You have no other choice than guessing the sentence.")
         guess_sentence()
 
@@ -423,7 +426,8 @@ def no_consonant():
             break
 
         else:
-            termcolor.cprint("wrong answer. a or b?", "magenta")
+            termcolor.cprint("wrong answer. a or b?", "magenta",
+                             attrs=['bold'])
 
 
 def player_guess():
@@ -439,19 +443,19 @@ def player_guess():
 
         if len(GUESS) != 1:  # 1 letter only
             termcolor.cprint(f"Sorry, {player_turn()} we need only one "
-                             "letter.", "magenta")
+                             "letter.", "magenta", attrs=['bold'])
             print("Please guess a single consonant.\n")
             continue
 
         elif GUESS not in CONSONANT:
             termcolor.cprint(f"Sorry, {GUESS.upper()} is not a "
-                             "consonant.", "magenta")
+                             "consonant.", "magenta", attrs=['bold'])
             print("Please enter a consonant.\n")
             continue
 
         elif GUESS in guessed_letters:
             termcolor.cprint(f"Sorry, {GUESS.upper()} has already been "
-                             "guessed.", "red")
+                             "guessed.", "red", attrs=['bold'])
             print(f"You unfortunately lose you turn {player_turn()}.\n")
             TURN += 1
             score_sentence_print()
@@ -488,19 +492,19 @@ def compare_print():
     letter_count = MYSTERY_SENTENCE.count(GUESS)
 
     if letter_count == 1:
-        termcolor.cprint("\nGood", "green")
+        termcolor.cprint("\nGood", "green", attrs=['bold'])
         print(f"{GUESS.upper()} is found once in the mystery sentence.")
 
     elif letter_count == 0:
         termcolor.cprint(f"\n{GUESS.upper()} is not in the mystery sentence.",
-                         "red")
+                         "red", attrs=['bold'])
         print(f"{player_turn()}, you pass your turn.\n")
         TURN += 1
         score_sentence_print()
         turn_wheel()
 
     else:
-        termcolor.cprint("\nCongratulations", "green")
+        termcolor.cprint("\nCongratulations", "green", attrs=['bold'])
         print(f"{GUESS.upper()} is found {letter_count} times")
         print("in the sentence!")
 
@@ -509,7 +513,8 @@ def compare_print():
     # updates the player earnings
     ROUND_BANK[TURN % 2] = int(price) + int(ROUND_BANK[TURN % 2])
 
-    termcolor.cprint(f"\n{player_turn()}, you earn {price}$!!!\n", "blue")
+    termcolor.cprint(f"\n{player_turn()}, you earn {price}$!!!\n", "blue",
+                     attrs=['bold'])
 
     check_consonant()
 
@@ -537,7 +542,8 @@ def compare_print():
             break
 
         else:
-            termcolor.cprint("wrong answer. a, b or c?", "magenta")
+            termcolor.cprint("wrong answer. a, b or c?", "magenta",
+                             attrs=['bold'])
 
 
 def guess_sentence():
@@ -556,9 +562,10 @@ def guess_sentence():
         winning_round()
 
     else:
-        termcolor.cprint(f"\nI am really sorry {player_turn()}", "red")
-        termcolor.cprint("The answer is incorrect,", "red")
-        termcolor.cprint("you pass your turn", "red")
+        termcolor.cprint(f"\nI am really sorry {player_turn()}", "red",
+                         attrs=['bold'])
+        termcolor.cprint("The answer is incorrect,", "red", attrs=['bold'])
+        termcolor.cprint("you pass your turn", "red", attrs=['bold'])
         TURN += 1
         check_consonant()
         score_sentence_print()
@@ -575,9 +582,10 @@ def winning_round():
     """
     global ROUND, ROUND_BANK
     clear()
-    termcolor.cprint(f"\nCONGRATULATIONS {player_turn()}!!!", "green")
+    termcolor.cprint(f"\nCONGRATULATIONS {player_turn()}!!!", "green",
+                     attrs=['bold'])
     print("The answer was indeed")
-    termcolor.cprint(f"{MYSTERY_SENTENCE.upper()}!!!", "green")
+    termcolor.cprint(f"{MYSTERY_SENTENCE.upper()}!!!", "green", attrs=['bold'])
 
     if int(ROUND_BANK[TURN % 2]) > 1000:
         print(f"You have totalized {ROUND_BANK[TURN % 2]}$ in")
@@ -613,8 +621,10 @@ def winning_round():
         game_over()
 
     print("Let's recapitulate the gains:")
-    termcolor.cprint(f"{PLAYER[0]} you own {PLAYER_BANK[0]}$", "blue")
-    termcolor.cprint(f"{PLAYER[1]} you own {PLAYER_BANK[1]}$", "blue")
+    termcolor.cprint(f"{PLAYER[0]} you own {PLAYER_BANK[0]}$", "blue",
+                     attrs=['bold'])
+    termcolor.cprint(f"{PLAYER[1]} you own {PLAYER_BANK[1]}$", "blue",
+                     attrs=['bold'])
 
     if int(PLAYER_BANK[0]) == int(PLAYER_BANK[1]):
         print("Ladies and gentlemen, the game is tied.")
@@ -653,26 +663,27 @@ def buy_vowel():
     ROUND_BANK[TURN % 2] = int(ROUND_BANK[TURN % 2]) - 250
 
     print(f"\n{player_turn()}, you chose to buy a vowel.")
-    termcolor.cprint(f"You have now have {ROUND_BANK[TURN % 2]}$.\n" "blue")
+    termcolor.cprint(f"You have now have {ROUND_BANK[TURN % 2]}$.\n" "blue",
+                     attrs=['bold'])
     print("What is your vowel?")
 
     while True:
         GUESS = input("-> \n").lower()
         if len(GUESS) != 1:
             termcolor.cprint(f"Sorry {player_turn()} we need a single "
-                             "letter.", "magenta")
+                             "letter.", "magenta", attrs=['bold'])
             print("Please insert a single vowel\n")
             continue
 
         elif GUESS not in VOWELS:
             termcolor.cprint(f"Sorry {GUESS.upper()} is not a "
-                             "vowel.", "magenta")
+                             "vowel.", "magenta", attrs=['bold'])
             print("Please enter a vowel\n")
             continue
 
         elif GUESS in guessed_letters:
             termcolor.cprint(f"Sorry, {GUESS.upper()} has already been "
-                             "guessed.", "red")
+                             "guessed.", "red", attrs=['bold'])
             print(f"You unfortunately lose you turn {player_turn()}.\n")
             TURN += 1
             check_consonant()
@@ -704,7 +715,8 @@ def buy_vowel():
 
     elif letter_count == 0:
         print(f"\n{GUESS.upper()} is not in the mystery sentence.")
-        termcolor.cprint(f"{player_turn()}, you pass your turn\n", "magenta")
+        termcolor.cprint(f"{player_turn()}, you pass your turn\n", "magenta",
+                         attrs=['bold'])
         TURN += 1
         check_consonant()
         turn_wheel()
@@ -732,7 +744,8 @@ def buy_vowel():
                 break
 
             else:
-                termcolor.cprint("wrong answer. a or b?", "magenta")
+                termcolor.cprint("wrong answer. a or b?", "magenta",
+                                 attrs=['bold'])
 
     print(f"{player_turn()} you guessed a correct vowel.")
     print("what is your next move please?")
@@ -757,7 +770,8 @@ def buy_vowel():
             break
 
         else:
-            termcolor.cprint("wrong answer. a, b or c?", "magenta")
+            termcolor.cprint("wrong answer. a, b or c?", "magenta",
+                             attrs=['bold'])
 
 
 def game_over():
@@ -770,12 +784,14 @@ def game_over():
     print(f"We went through {num_round()} rounds")
     print(" and after ups and downs the winner is...")
     if int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):  # If player1 wins
-        termcolor.cprint(f"{PLAYER[0]} with {PLAYER_BANK[0]}$")
+        termcolor.cprint(f"{PLAYER[0]} with {PLAYER_BANK[0]}$", "green",
+                         attrs=['bold'])
         print("What a victory!")
         print(f"Let's not forget {PLAYER[1]}. You were sensational too.")
-        
+
     else:  # If player2 wins
-        termcolor.cprint(f"{PLAYER[1]} with {PLAYER_BANK[1]}$")
+        termcolor.cprint(f"{PLAYER[1]} with {PLAYER_BANK[1]}$", "green",
+                         attrs=['bold'])
         print("What a victory!")
         print(f"Let's not forget {PLAYER[0]}. You were sensational too.")
 
