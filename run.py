@@ -3,10 +3,10 @@ The Wheel or fortune game.
 """
 import sys
 import time
-import termcolor
 from time import sleep
 from os import system, name
 import random
+import termcolor
 import gspread
 from google.oauth2.service_account import Credentials
 
@@ -82,6 +82,25 @@ def player_turn():
     return PLAYER[TURN % 2]
 
 
+def score_sentence_print():
+    """
+    Function clears the screen after 2 seconds and display the overall
+    game score, the round score and the mystery sentence.
+    """
+    sleep(2)
+    clear()
+    termcolor.cprint("- "*25, "cyan")
+    termcolor.cprint(f"Game score  {PLAYER[0]} = {PLAYER_BANK[0]}$ --- "
+                     f"{PLAYER[1]} = {PLAYER_BANK[1]}$", "cyan")
+    termcolor.cprint(f"Round score {PLAYER[0]} = {ROUND_BANK[0]}$ --- "
+                     f"{PLAYER[1]} = {ROUND_BANK[1]}$", "cyan")
+    termcolor.cprint("- "*25, "cyan")
+    termcolor.cprint("* "*25, "yellow")
+    print(MYSTERY_SENTENCE)
+    termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
+    termcolor.cprint("* "*25, "yellow")
+
+
 def play_game():
     """
     The Funtion starts the game and registers the 2 players names.
@@ -93,10 +112,10 @@ def play_game():
     print("Contestant 1. What is your name please?")
     while True:
         PLAYER[0] = (input("-> \n"))
-        if PLAYER[0].strip() == '':  # obligation to insert at least 1 character.
+        # obligation to insert at least 1\ character.
+        if PLAYER[0].strip() == '':
             print("Don't be shy. I know I am intimidating but please")
             print("name yourself so the audience can recognize you.")
-            
 
         elif len(PLAYER[0]) > 15:  # 15 characters max.
             print("WOW, I will never remember such a long name.\n")
@@ -221,8 +240,9 @@ def player_input():
 
         else:
             clear()
-            print("Ladies and Gentlemen... Without further ado.\n")
-            print("LET'S PLAY THE WHEEL ... OF ...  FORTUUUUUNNE!\n")
+            if ROUND == 1:
+                print("Ladies and Gentlemen... Without further ado.\n")
+                print("LET'S PLAY THE WHEEL ... OF ...  FORTUUUUUNNE!\n")
             break
 
 
@@ -241,9 +261,9 @@ def select_row():
     # Each round starts here so the scenario switches if we play the last
     # round with the x3 gain multiplicator.
     if int(ROUND) == int(NUM_ROUND):
-        print("Dear contestants, this is the final Round.")
-        print("As you probably already know, the winner's gains")
-        print("will be multiplied by 3 at the end.\n")
+        print("Ladies and gentlemen, this is the final Round.")
+        print("As you probably already know, this round winner")
+        print("will see its earnings muliplied by 3.\n")
 
         if int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):
             print(f"{PLAYER[1]}, this is your chance.")
@@ -277,9 +297,9 @@ def convert_letter(MYSTERY_SENTENCE):
         if ord(MYSTERY_SENTENCE[i]) != 32:
             HIDE_SENTENCE = HIDE_SENTENCE.replace(MYSTERY_SENTENCE[i], '_')
 
-    termcolor.cprint("* "*20, "yellow")
+    termcolor.cprint("* "*25, "yellow")
     termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-    termcolor.cprint("* "*20, "yellow")
+    termcolor.cprint("* "*25, "yellow")
 
     print("\nGOOD LUCK!")
     turn_wheel()
@@ -418,27 +438,23 @@ def player_guess():
         GUESS = input("-> \n").lower()
 
         if len(GUESS) != 1:  # 1 letter only
-            termcolor.cprint(f"Sorry {player_turn()} we need only one\
-                             letter.", "magenta")
+            termcolor.cprint(f"Sorry, {player_turn()} we need only one "
+                             "letter.", "magenta")
             print("Please guess a single consonant.\n")
             continue
 
         elif GUESS not in CONSONANT:
-            termcolor.cprint(f"Sorry {GUESS.upper()} is not a\
-                             consonant.", "magenta")
+            termcolor.cprint(f"Sorry, {GUESS.upper()} is not a "
+                             "consonant.", "magenta")
             print("Please enter a consonant.\n")
             continue
 
         elif GUESS in guessed_letters:
-            termcolor.cprint(f"Sorry, {GUESS.upper()} has already been\
-                             guessed.", "red")
+            termcolor.cprint(f"Sorry, {GUESS.upper()} has already been "
+                             "guessed.", "red")
             print(f"You unfortunately lose you turn {player_turn()}.\n")
             TURN += 1
-            sleep(2)
-            clear()
-            termcolor.cprint("* "*20, "yellow")
-            termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-            termcolor.cprint("* "*20, "yellow")  
+            score_sentence_print()
             turn_wheel()
             break
 
@@ -447,8 +463,6 @@ def player_guess():
             print(f"Let's see if the letter '{GUESS.upper()}' ")
             print("is in the mystery sentence.\n")
             guessed_letters.append(GUESS)
-            sleep(2)
-            clear()
             compare_print()
             break
 
@@ -468,9 +482,7 @@ def compare_print():
         hidden_list[index] = GUESS
         HIDE_SENTENCE = "".join(hidden_list)
 
-    termcolor.cprint("* "*20, "yellow")
-    termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-    termcolor.cprint("* "*20, "yellow")
+    score_sentence_print()
 
     # gives the number of letter on the mystery sentence
     letter_count = MYSTERY_SENTENCE.count(GUESS)
@@ -484,11 +496,7 @@ def compare_print():
                          "red")
         print(f"{player_turn()}, you pass your turn.\n")
         TURN += 1
-        sleep(2)
-        clear()
-        termcolor.cprint("* "*20, "yellow")
-        termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-        termcolor.cprint("* "*20, "yellow") 
+        score_sentence_print()
         turn_wheel()
 
     else:
@@ -501,11 +509,7 @@ def compare_print():
     # updates the player earnings
     ROUND_BANK[TURN % 2] = int(price) + int(ROUND_BANK[TURN % 2])
 
-    print(f"\n{player_turn()}, you earned {price}$!!!\n")
-    termcolor.cprint("- "*25, "cyan")
-    termcolor.cprint(f"{PLAYER[0]} = {ROUND_BANK[0]}$ --- \
-                     {PLAYER[1]} = {ROUND_BANK[1]}$", "cyan")
-    termcolor.cprint("- "*25, "cyan")
+    termcolor.cprint(f"\n{player_turn()}, you earn {price}$!!!\n", "blue")
 
     check_consonant()
 
@@ -518,29 +522,17 @@ def compare_print():
     while True:
         user_input = input("a, b or c? -> \n").lower()
         if user_input == "a":
-            sleep(2)
-            clear()
-            termcolor.cprint("* "*20, "yellow")
-            termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-            termcolor.cprint("* "*20, "yellow") 
+            score_sentence_print()
             buy_vowel()
             break
 
         elif user_input == "b":
-            sleep(2)
-            clear()
-            termcolor.cprint("* "*20, "yellow")
-            termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-            termcolor.cprint("* "*20, "yellow") 
+            score_sentence_print()
             turn_wheel()
             break
 
         elif user_input == "c":
-            sleep(2)
-            clear()
-            termcolor.cprint("* "*20, "yellow")
-            termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-            termcolor.cprint("* "*20, "yellow") 
+            score_sentence_print()
             guess_sentence()
             break
 
@@ -564,16 +556,12 @@ def guess_sentence():
         winning_round()
 
     else:
-        termcolor.cprint("- "*15, "cyan")(f"\nI am really sorry {player_turn()}", "red")
+        termcolor.cprint(f"\nI am really sorry {player_turn()}", "red")
         termcolor.cprint("The answer is incorrect,", "red")
         termcolor.cprint("you pass your turn", "red")
         TURN += 1
         check_consonant()
-        sleep(2)
-        clear()
-        termcolor.cprint("* "*20, "yellow")
-        termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-        termcolor.cprint("* "*20, "yellow") 
+        score_sentence_print()
         turn_wheel()
 
 
@@ -642,8 +630,8 @@ def winning_round():
         print("The next round has your name written all over it!\n")
 
     ROUND += 1
-    sleep(2)
-    clear()
+    print("Dear contestants, are you ready to play the next round?!\n")
+    player_input()
     print(f"It is now time to move onto Round {ROUND}!!!\n")
     print("Dear contestants your earnings for the round")
     print("are obviously reset to 0.\n")
@@ -665,33 +653,30 @@ def buy_vowel():
     ROUND_BANK[TURN % 2] = int(ROUND_BANK[TURN % 2]) - 250
 
     print(f"\n{player_turn()}, you chose to buy a vowel.")
-    print(f"You have now have {ROUND_BANK[TURN % 2]}$ in the bank.\n")
+    termcolor.cprint(f"You have now have {ROUND_BANK[TURN % 2]}$.\n" "blue")
     print("What is your vowel?")
 
     while True:
         GUESS = input("-> \n").lower()
         if len(GUESS) != 1:
-            print(f"Sorry {player_turn()} we need a single letter.")
+            termcolor.cprint(f"Sorry {player_turn()} we need a single "
+                             "letter.", "magenta")
             print("Please insert a single vowel\n")
             continue
 
         elif GUESS not in VOWELS:
-            print(f"Sorry {GUESS.upper()} is not a vowel.")
+            termcolor.cprint(f"Sorry {GUESS.upper()} is not a "
+                             "vowel.", "magenta")
             print("Please enter a vowel\n")
             continue
 
         elif GUESS in guessed_letters:
-            print(f"Sorry, {GUESS.upper()} has already been guessed.")
+            termcolor.cprint(f"Sorry, {GUESS.upper()} has already been "
+                             "guessed.", "red")
             print(f"You unfortunately lose you turn {player_turn()}.\n")
             TURN += 1
             check_consonant()
-            sleep(1)
-            clear()
-
-            termcolor.cprint("* "*20, "yellow")
-            termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-            termcolor.cprint("* "*20, "yellow")
-
+            score_sentence_print()
             turn_wheel()
             break
 
@@ -700,8 +685,6 @@ def buy_vowel():
             print(f"Let's see if '{GUESS.upper()}'")
             print("is in the mystery sentence.\n")
             guessed_letters.append(GUESS)
-            sleep(1)
-            clear()
             break
 
     hidden_list = list(HIDE_SENTENCE)
@@ -712,9 +695,7 @@ def buy_vowel():
         hidden_list[index] = GUESS
         HIDE_SENTENCE = "".join(hidden_list)
 
-    termcolor.cprint("* "*20, "yellow")
-    termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-    termcolor.cprint("* "*20, "yellow")
+    score_sentence_print()
 
     letter_count = MYSTERY_SENTENCE.count(GUESS)
     if letter_count == 1:
@@ -751,7 +732,7 @@ def buy_vowel():
                 break
 
             else:
-                ptermcolor.cprintrint("wrong answer. a or b?", "magenta")
+                termcolor.cprint("wrong answer. a or b?", "magenta")
 
     print(f"{player_turn()} you guessed a correct vowel.")
     print("what is your next move please?")
@@ -761,29 +742,17 @@ def buy_vowel():
     while True:
         user_input = input("-> \n").lower()
         if user_input == "a":
-            sleep(2)
-            clear()
-            termcolor.cprint("* "*20, "yellow")
-            termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-            termcolor.cprint("* "*20, "yellow") 
+            score_sentence_print()
             buy_vowel()
             break
 
         elif user_input == "b":
-            sleep(2)
-            clear()
-            termcolor.cprint("* "*20, "yellow")
-            termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-            termcolor.cprint("* "*20, "yellow") 
+            score_sentence_print()
             turn_wheel()
             break
 
         elif user_input == "c":
-            sleep(2)
-            clear()
-            termcolor.cprint("* "*20, "yellow")
-            termcolor.cprint(f"\n{HIDE_SENTENCE}\n", "yellow", attrs=['bold'])
-            termcolor.cprint("* "*20, "yellow") 
+            score_sentence_print()
             guess_sentence()
             break
 
@@ -797,28 +766,33 @@ def game_over():
     the winner is and will conclude the game like a
     host would do.
     """
-    print("AND THIS IS IT!!!!")
+    print("LADIES AND GENTLEMEN THIS IS IT!!!!")
+    print(f"We went through {num_round()} rounds")
+    print(" and after ups and downs the winner is...")
     if int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):  # If player1 wins
-        print(f"{PLAYER[0]}")
-        print("YOU... ARE... THE... WINNER!!!!")
-        print(f"You have successfuly saved {PLAYER_BANK[0]}$")
-
+        termcolor.cprint(f"{PLAYER[0]} with {PLAYER_BANK[0]}$")
+        print("What a victory!")
+        print(f"Let's not forget {PLAYER[1]}. You were sensational too.")
+        
     else:  # If player2 wins
-        print(f"{PLAYER[1]}")
-        print("YOU... ARE... THE... WINNER!!!!")
-        print(f"You have successfuly saved {PLAYER_BANK[1]}$")
+        termcolor.cprint(f"{PLAYER[1]} with {PLAYER_BANK[1]}$")
+        print("What a victory!")
+        print(f"Let's not forget {PLAYER[0]}. You were sensational too.")
 
-    print("throughout the Rounds.")
     print("\nThe competition was fierce and you both have been")
     print("amazing contestants.")
     print("Thank you sooo very much!\n ")
-    print("But alas! All good things must end.")
-    print("And this is our time to say good bye.\n")
+    print("But alas! All good things must end,")
+    print("and it is now time to say good bye.\n")
     print("BUT FEAR NOT! We will be back soon.")
+    print("After all we are just one click away.\n")
     print("Ladies and gentlemen!")
     print("My name is Mr Boty and I will welcome you next time")
-    print("to once more turn the....")
-    print("WHEEL... OF.... FORTUUUUUNE!!!!")
+    print("to once more turn the WHEEL")
+    sleep(2)
+    print("OF")
+    sleep(2)
+    print("FORTUUUUUNE!!!!")
 
     exit()  # end of the game.
 
