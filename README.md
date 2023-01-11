@@ -160,7 +160,9 @@ Several issues were encountered during developpement but the most troublesome ar
 **The number of round question** popped several times thus asking how many rounds the players wanted. The developper made a mistake and instead of using the variable name in several literal string, he used the function itself.
 
 ### Unfixed Bugs 
-There are no more bug known by the developper 
+The screen is supposed to be cleared each time the function clear() is called. The function is working. But the issue is that only the last 24 lines are removed.
+For example. The rules are pretty long: they are 38 lines long. 
+When clear() is called at the end of it, only the last 24 lines are cleared and the first 14 lines stay all game long. 
 
 [Back to top ⇧](#Wheel-Of-Fortune)
 
