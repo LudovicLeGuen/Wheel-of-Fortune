@@ -213,6 +213,7 @@ Deploying on Heroky required the following:
 ## Credits 
 ### Code 
 The developer has consulted countless times Stack Overflow and W3Schools in ordeer to build the game.
+The code inspired by other developpers is commented directly in the code.
 
 [Back to top ⇧](#Wheel-Of-Fortune)
 
