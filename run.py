@@ -1,5 +1,5 @@
 """
-The Wheel or fortune game.
+The Wheel or fortune game for 2 players.
 """
 import sys
 import time
@@ -156,13 +156,13 @@ def num_round():
         try:
             NUM_ROUND = int(input("between 2 and 10: "))
         except ValueError:
-            print("Please enter a valid integer 2-10")
+            print("Please enter a whole number: 2-10")
             continue
         if NUM_ROUND >= 2 and NUM_ROUND <= 10:
             print(f"\nExcellent. Today we will play {NUM_ROUND} Rounds.\n")
             break
         else:
-            print('The integer must be in the range 2-10')
+            print('The number must be in the range 2-10')
 
     print("But before we start the game,\n")
     print("would you like to consult the rules?\n")
@@ -196,9 +196,9 @@ def rules():
             print("The rules are simple:\n")
             print("You have to discover a mystery sentence per round")
             print("by guessing a consonant or a vowel each turn.\n")
-            print("For your firt guess you will need to:")
-            print("- Turn the wheel to get a cash value")
-            print("- And then guess a consonant.\n")
+            print("When you start your turn you have to:")
+            print("- Spin the wheel to get a cash value")
+            print("- Then guess a consonant.\n")
             print("- The cash value will be multiplied by the")
             print("  number of consonant found in the mystery")
             print("  sentence and will be added to your bank.\n")
@@ -212,7 +212,7 @@ def rules():
             print("  c - your letter has already been guessed")
             print("  c - you spin the wheel on 'Pass your turn'")
             print("  e - you spin the wheel on 'Bankrupt' in which case")
-            print("  you also lose all your earnings. OUCH!!\n")
+            print("  you also lose all your round earnings. OUCH!!\n")
             print("- The player who guessed correctly the mystery sentence")
             print("  earns her/his money accumulated during the round.")
             print("- The loser loses the round money.")
@@ -234,8 +234,10 @@ def player_input():
         user_input = input("-> \n").lower()
 
         if user_input.lower() != 'yes':
-            print("It's ok. We have all the time in the world")
-            print("Enter yes when you are ready")
+            termcolor.cprint("It's ok. We have all the time in the world",
+                             "magenta", attrs=['bold'])
+            termcolor.cprint("Enter yes when you are ready",
+                             "magenta", attrs=['bold'])
             continue
 
         else:
@@ -404,7 +406,7 @@ def no_consonant():
     It gives only two choices to play since the user cannot spin the wheel
     anymore.
     """
-    termcolor.cprint("\nNO MORE CONSONANT IN THE MYSTERY SENTENCE!", "magenta",
+    termcolor.cprint("NO MORE CONSONANT IN THE MYSTERY SENTENCE!", "magenta",
                      attrs=['bold'])
 
     if int(ROUND_BANK[TURN % 2]) < 250:
@@ -645,7 +647,8 @@ def winning_round():
         print("The next round has your name written all over it!\n")
 
     ROUND += 1
-    print("Dear contestants, are you ready to play the next round?!\n")
+    print("Dear contestants, are you ready to play the next round?"
+          "(type yes when ready)\n")
     player_input()
     print(f"It is now time to move onto Round {ROUND}!!!\n")
     print("Dear contestants your earnings for the round")
@@ -664,7 +667,9 @@ def buy_vowel():
     to checks if the vowel is in the mystery sentence"""
 
     global GUESS, HIDE_SENTENCE, TURN
-
+    # Removes 250$ from the player round bank.
+    # It can be 1 or 10 vowels found in the sentence:
+    # the price will still be 250$
     ROUND_BANK[TURN % 2] = int(ROUND_BANK[TURN % 2]) - 250
 
     print(f"\n{player_turn()}, you chose to buy a vowel.")
@@ -674,6 +679,7 @@ def buy_vowel():
 
     while True:
         GUESS = input("-> \n").lower()
+        # If input is not 1 letter, user must try again.
         if len(GUESS) != 1:
             termcolor.cprint(f"Sorry {player_turn()} we need a single "
                              "letter.", "magenta", attrs=['bold'])
@@ -681,12 +687,14 @@ def buy_vowel():
             continue
 
         elif GUESS not in VOWELS:
+            # verifies if it is a vowel
             termcolor.cprint(f"Sorry {GUESS.upper()} is not a "
                              "vowel.", "magenta", attrs=['bold'])
             print("Please enter a vowel\n")
             continue
 
         elif GUESS in guessed_letters:
+            # Vowel already guessed before. Player loses trun
             termcolor.cprint(f"Sorry, {GUESS.upper()} has already been "
                              "guessed.", "red", attrs=['bold'])
             print(f"You unfortunately lose you turn {player_turn()}.\n")
@@ -715,7 +723,7 @@ def buy_vowel():
 
     letter_count = MYSTERY_SENTENCE.count(GUESS)
     if letter_count == 1:
-        print("\nNot bad!")
+        termcolor.cprint("\nNot bad!", "green", attrs=['bold'])
         print(f"{GUESS.upper()} is found once in the mystery sentence")
 
     elif letter_count == 0:
@@ -734,7 +742,7 @@ def buy_vowel():
         print("in the sentence!\n")
 
     check_consonant()
-
+    # If player does not have 250$ in the bank, the system changes the options
     if int(ROUND_BANK[TURN % 2]) < 250:
         termcolor.cprint(f"I apologize {player_turn()} but you do not", "red",
                          attrs=['bold'])
@@ -795,7 +803,7 @@ def game_over():
     clear()
     print("LADIES AND GENTLEMEN THIS IS IT!!!!")
     print(f"We went through {NUM_ROUND} rounds")
-    print(" and after ups and downs the winner is...")
+    print("and after ups and downs the winner is...")
     sleep(2)
 
     if int(PLAYER_BANK[0]) > int(PLAYER_BANK[1]):  # If player1 wins
